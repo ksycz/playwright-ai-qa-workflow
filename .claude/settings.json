@@ -1,0 +1,6 @@
+{
+  "permissions": {
+    "allow": ["Bash(npm run *)", "Bash(npx playwright *)"],
+    "deny": ["Edit(requirements/**)", "Write(requirements/**)"]
+  }
+}
