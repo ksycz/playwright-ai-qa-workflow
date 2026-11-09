@@ -23,5 +23,6 @@ Read every file in `requirements/`. You only report; a human edits the files.
 
 - A table: id, one-line summary, verdict (`ok` or `question`).
 - A numbered list of questions, each naming its id and the exact gap, for
-  example: "REQ-2.4: at what age does someone count as a senior?"
+  example: "REQ-9.1: can a password be exactly 8 characters long, or must it
+  be longer?"
 - The total count of ids found.

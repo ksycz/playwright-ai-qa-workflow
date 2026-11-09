@@ -49,7 +49,7 @@ export function App() {
                 <button
                   type="button"
                   data-testid="remove-visitor-button"
-                  aria-label={`Remove visitor aged ${line.age}`}
+                  aria-label={`Remove visitor ${index + 1}, aged ${line.age}`}
                   onClick={() => onRemove(index)}
                 >
                   Remove
