@@ -38,8 +38,8 @@ product owner (PO); I play QA. The AI drafts, and a human decides at every step.
 
 1. **Ticket arrives.** The PO writes each feature as a user story with
    numbered acceptance criteria (`REQ-1.1`), published as a GitHub issue:
-   [#2 order](../../issues/2), [#3 prices](../../issues/3),
-   [#4 total](../../issues/4). The same criteria live in
+   [#2 order](https://github.com/ksycz/playwright-ai-qa-workflow/issues/2), [#3 prices](https://github.com/ksycz/playwright-ai-qa-workflow/issues/3),
+   [#4 total](https://github.com/ksycz/playwright-ai-qa-workflow/issues/4). The same criteria live in
    [`requirements/`](requirements/), the file the tools read.
 2. **Refinement.** Before anything is tested, I review the tickets for gaps,
    vague wording and missing cases, then run the `refine-requirements` skill
