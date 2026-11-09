@@ -33,16 +33,37 @@ come to exist **in the first place**.
 
 ## The workflow
 
-1. **Requirements.** Written by a human in [`requirements/`](requirements/),
-   with numbered acceptance criteria (`REQ-1.1`). Two are vague on purpose.
-2. **Test strategy.** One page: ranked risks, test levels, AI and human roles.
-3. **Plan.** Playwright's planner agent explores the app and writes a test plan.
-4. **Plan review.** A human checks it against the requirements and the strategy.
-5. **Generate.** The generator agent writes tests; every title carries its REQ id.
-6. **Test review.** A human checks each test asserts the requirement, not the UI.
-7. **Break and heal.** Planted bugs prove the tests catch real defects; the
-   healer agent repairs a renamed button, and is refused when it would hide a bug.
-8. **Traceability.** A report maps every requirement to the tests that cover it.
+It follows how a QA engineer works with AI in a real team. Claude plays the
+product owner (PO); I play QA. The AI drafts, and a human decides at every step.
+
+1. **Ticket arrives.** The PO writes each feature as a user story with
+   numbered acceptance criteria (`REQ-1.1`), published as a GitHub issue:
+   [#2 order](../../issues/2), [#3 prices](../../issues/3),
+   [#4 total](../../issues/4). The same criteria live in
+   [`requirements/`](requirements/), the file the tools read.
+2. **Refinement.** Before anything is tested, I review the tickets for gaps,
+   vague wording and missing cases, then run the `refine-requirements` skill
+   and compare the AI's questions with mine. Questions go to the PO as issue
+   comments; the answers are copied into `requirements/`.
+3. **Test strategy.** One page, written by hand: ranked risks, which test
+   level checks what, what the AI does and what I decide, and what is out of
+   scope.
+4. **Exploration and plan.** Playwright's planner agent explores the running
+   app and drafts a test plan. I review it against the requirements and the
+   strategy.
+5. **Generation and review.** The generator agent writes the tests; every
+   title carries its REQ id. I review each one like a pull request: does it
+   check the requirement, or just repeat what the screen shows?
+6. **Bugs.** Planted bugs prove the tests catch real defects. Each caught bug
+   gets a bug report issue: steps to reproduce, expected and actual result,
+   severity, and the failing test. A real bug is reported, never "healed".
+7. **Healing.** When the UI changes on purpose (a renamed button), the healer
+   agent repairs the tests, and I check it changed only the locator.
+8. **Sign-off.** A traceability report in CI maps every requirement to the
+   tests that cover it, or names it as a gap.
+
+Every correction I make to AI output is logged in `docs/review-log.md`
+(from Milestone 2). That log is the evidence that a human stays in control.
 
 ## The app
 
@@ -84,9 +105,9 @@ Playwright tests (`npm run e2e`) arrive in Milestone 2.
 | Milestone | Content | Status |
 | --- | --- | --- |
 | 1 | App, requirements, Claude Code setup | In review |
-| 2 | Test strategy, seed test, AI-written test plan and its review | Planned |
+| 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | Planned |
 | 3 | AI-generated tests and their review | Planned |
-| 4 | Planted bugs and the healer | Planned |
+| 4 | Planted bugs, bug reports and the healer | Planned |
 | 5 | Traceability report and CI | Planned |
 | 6 | Final README with findings | Planned |
 
