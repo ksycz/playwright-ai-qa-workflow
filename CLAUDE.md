@@ -21,10 +21,10 @@ stand-in to test against.
   `[REQ-2.2] children under 6 go free`.
 - Locate elements with `getByRole` or `getByTestId`.
 - Never skip, delete or loosen a failing test to make it pass.
-- Full rules: `docs/conventions.md` (added in Milestone 2; read it before
+- Full rules: `docs/conventions.md` (read it before
   writing or fixing a test).
 
-## Review log (added in Milestone 2)
+## Review log
 
 Every correction a human makes to AI output gets an entry in
 `docs/review-log.md`, in the format at the top of that file.
