@@ -6,8 +6,10 @@
 
 ## Acceptance criteria
 
-- **REQ-1.1** A visitor can be added by entering their age. The visitor appears in the order with their price category: Free Child, Adult or Senior.
-- **REQ-1.2** An age is a whole number from 0 to 120. Only digits are accepted, spaces around them are ignored, and 007 is accepted. 5.0, +5, -5 and 1e1 are rejected. Exact messages: “Enter an age” for an empty field and “Age must be a whole number from 0 to 120” for anything else invalid.
-- **REQ-1.3** An order has at most 10 tickets. Trying to add an 11th visitor shows a message, and the order stays at 10. The message is “An order can have at most 10 tickets”. Free tickets count toward the 10. If the age is invalid, the invalid-age message wins.
-Messages go away after the next successful add or after a visitor is removed.
-- **REQ-1.4** A visitor can be removed from the order. All prices and the total update at once. “At once” means correct right after the click, with no reload and no further action. After the click on remove, the prices and the total are already correct. A test checks the result right after the click. 
+- **REQ-1.1** A visitor can be added by entering their age. The visitor appears in the order with their price category: Free, Child, Adult or Senior.
+- **REQ-1.2** An age is a whole number from 0 to 120. Only digits are accepted, and spaces around them are ignored. "007" is accepted. "5.0", "+5", "-5", "1e1", text and numbers above 120 are rejected. No visitor is added when the age is rejected, and a message is shown:
+  - empty field: "Enter an age"
+  - any other invalid age: "Age must be a whole number from 0 to 120"
+- **REQ-1.3** An order has at most 10 tickets, and free tickets count. Trying to add an 11th visitor shows the message "An order can have at most 10 tickets", and the order stays at 10. The age field and the "Add visitor" button stay enabled at 10 tickets. If the age is also invalid, the invalid-age message from REQ-1.2 is shown instead.
+- **REQ-1.4** A visitor can be removed from the order. After the click on remove, all prices and the total are already correct, with no page reload and no further user action.
+- **REQ-1.5** A refusal message from REQ-1.2 or REQ-1.3 disappears after the next visitor is added successfully or after a visitor is removed. It stays while the user is typing.
