@@ -1,0 +1,33 @@
+{
+  "name": "playwright-ai-qa-workflow",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Small Playwright project showing AI-assisted QA end to end",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite app --port 5173 --strictPort",
+    "build": "tsc --noEmit -p tsconfig.json && vite build app",
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "trace": "tsx scripts/traceability.ts"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
+  }
+}

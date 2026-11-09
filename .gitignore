@@ -1,0 +1,8 @@
+node_modules
+dist
+test-results
+playwright-report
+reports
+.claude/settings.local.json
+docs/LESSONS_LEARNED.md
+.superpowers
