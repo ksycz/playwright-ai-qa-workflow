@@ -26,28 +26,43 @@ export function App() {
   }
 
   return (
-    <main style={{ fontFamily: 'sans-serif', maxWidth: 480, margin: '2rem auto' }}>
-      <h1>Ticket price calculator</h1>
+    <main className="card">
+      <header className="card-header">
+        <h1>Ticket price calculator</h1>
+        <p className="subtitle">Add each visitor's age to see the ticket prices and the total.</p>
+      </header>
 
-      <form onSubmit={onAdd}>
-        <label htmlFor="age">Visitor age</label>{' '}
-        <input id="age" data-testid="age-input" value={ageText} onChange={(e) => setAgeText(e.target.value)} />{' '}
-        <button type="submit" data-testid="add-visitor-button">Add visitor</button>
+      <form className="add-form" onSubmit={onAdd}>
+        <label htmlFor="age">Visitor age</label>
+        <div className="add-row">
+          <input
+            id="age"
+            data-testid="age-input"
+            inputMode="numeric"
+            autoComplete="off"
+            value={ageText}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? 'age-error' : undefined}
+            onChange={(e) => setAgeText(e.target.value)}
+          />
+          <button type="submit" className="primary" data-testid="add-visitor-button">Add visitor</button>
+        </div>
+        {error && <p id="age-error" role="alert" className="error" data-testid="age-error">{error}</p>}
       </form>
 
-      {error && <p role="alert" data-testid="age-error">{error}</p>}
-
       {ages.length === 0 ? (
-        <p data-testid="empty-order">Add visitors to see a price</p>
+        <p className="empty" data-testid="empty-order">Add visitors to see a price</p>
       ) : (
         <>
-          <ul>
+          <ul className="visitors">
             {order.lines.map((line, index) => (
-              <li key={index} data-testid="visitor-row" data-age={line.age}>
-                Age {line.age}: <span data-testid="category-label">{LABELS[line.category]}</span>{' '}
-                <span data-testid="ticket-price">{formatEuro(line.cents)}</span>{' '}
+              <li key={index} className="visitor" data-testid="visitor-row" data-age={line.age}>
+                <span className="visitor-age">Age {line.age}</span>
+                <span className={`badge badge-${line.category}`} data-testid="category-label">{LABELS[line.category]}</span>
+                <span className="price" data-testid="ticket-price">{formatEuro(line.cents)}</span>
                 <button
                   type="button"
+                  className="remove"
                   data-testid="remove-visitor-button"
                   aria-label={`Remove visitor ${index + 1}, aged ${line.age}`}
                   onClick={() => onRemove(index)}
@@ -57,10 +72,12 @@ export function App() {
               </li>
             ))}
           </ul>
-          {order.groupDiscount && (
-            <p data-testid="group-discount-note">Group discount: 10% off every ticket</p>
-          )}
-          <p data-testid="order-total">Total: {formatEuro(order.totalCents)}</p>
+          <div className="summary">
+            {order.groupDiscount && (
+              <p className="group-note" data-testid="group-discount-note">Group discount: 10% off every ticket</p>
+            )}
+            <p className="total" data-testid="order-total">Total: {formatEuro(order.totalCents)}</p>
+          </div>
         </>
       )}
     </main>
