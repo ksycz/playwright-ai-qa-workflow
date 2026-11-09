@@ -21,14 +21,15 @@ stand-in to test against.
   `[REQ-2.2] children under 6 go free`.
 - Locate elements with `getByRole` or `getByTestId`.
 - Never skip, delete or loosen a failing test to make it pass.
-- Full rules: `docs/conventions.md` (read it before writing or fixing a test).
+- Full rules: `docs/conventions.md` (added in Milestone 2; read it before
+  writing or fixing a test).
 
-## Review log
+## Review log (added in Milestone 2)
 
 Every correction a human makes to AI output gets an entry in
 `docs/review-log.md`, in the format at the top of that file.
 
-## Planted bugs
+## Planted bugs (added in Milestone 4)
 
 Known defects are switched on with `PLANTED_BUG=<name>` (forwarded to the app
 as `VITE_PLANTED_BUG`). The app code itself stays correct. A test that fails
