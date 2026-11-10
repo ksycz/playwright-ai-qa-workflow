@@ -107,7 +107,7 @@ npm run e2e        # Playwright tests (starts the app itself)
 | `app/` | The ticket price calculator (React, TypeScript, Vite) and its unit tests |
 | `tests/` | Playwright tests: `seed.spec.ts` by hand, `generated/` by the agent |
 | `specs/` | Test plans written by the planner agent |
-| `docs/` | Test strategy, conventions, review log and the skills index |
+| `docs/` | Test strategy, conventions, review log, agent prompts, saved review outputs (`docs/reviews/`) and the skills index |
 | `CLAUDE.md` | Rules for Claude Code in this repo |
 | `.claude/` | The Playwright agents, QE skills and settings |
 | `.mcp.json` | The Playwright test server the agents use |
