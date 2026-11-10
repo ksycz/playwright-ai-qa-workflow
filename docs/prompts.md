@@ -73,3 +73,66 @@ Write that output, unedited, to docs/reviews/m2-derive-test-data.md.
 ```
 
 Each real finding becomes an entry in `docs/review-log.md`.
+
+## Generator (Milestone 3)
+
+Start the app first (`npm run dev`). Generate one plan file at a time, in the
+run order from `specs/README.md` (prices, then total, then order), and review
+and commit each batch before starting the next. In Claude Code, in the repo
+root:
+
+```
+Use the playwright-test-generator agent on specs/prices.plan.md. Generate one
+test for each scenario, one test per file, written to tests/generated/. Name
+each file after the plan's File line plus the scenario number, for example
+prices-categories-2-1.spec.ts. Copy the scenario title as the test title, so it
+starts with its REQ id. Follow docs/conventions.md and copy the style of
+tests/seed.spec.ts. Assert the expected values written in the plan, never what
+the screen happens to show. If the app disagrees with the plan, do not adjust
+the test: stop and tell me which scenario and which value. If a step is
+unclear, ask instead of guessing.
+```
+
+For `specs/total.plan.md` and `specs/order.plan.md`, change only the plan file.
+
+Why each part is there:
+
+- **One plan file at a time:** the batch stays small enough to review like a
+  pull request, and a mistake in the first batch is fixed before it is copied
+  into the next.
+- **One test per file, named from the plan:** the generator agent writes one
+  test per file. The plan's File lines group several scenarios under one name,
+  so the scenario number is added to keep the files apart. Traceability uses the
+  REQ id in the title, not the file name.
+- **Scenario title as test title:** it starts with the REQ id, which the
+  traceability report reads.
+- **Conventions and seed test:** locators, no fixed waits, one behavior per test.
+- **Plan values, not screen values:** the expected prices and messages come from
+  the requirements through the plan. A test that copies the screen locks bugs in.
+- **Stop on disagreement:** if the app and the plan differ, the app might have a
+  bug. The generator must not fix the test to match it.
+
+Two scenarios need extra care. In `order.plan.md`, 2.2 reads the total once
+right after the click and checks a marker on `window` (the plan overview names
+this exception). In `total.plan.md` 2.1 and `order.plan.md` 2.4, the total must
+not be in the page, so the test checks a count of 0.
+
+## Generated test review (Milestone 3)
+
+After each batch, before committing it, in Claude Code, in the repo root:
+
+```
+Use the review-generated-test skill on tests/generated/prices-*.spec.ts.
+```
+
+Save the output unedited, as for the plan review (header and naming in
+[`reviews/README.md`](reviews/README.md)):
+
+```
+Write that output, unedited, to docs/reviews/m3-prices-test-review.md.
+```
+
+Then run the batch with `npx playwright test tests/generated/prices-*` and
+repeat it a few times to look for flaky tests (`--repeat-each=5`, retries stay
+at 0). Each correction you make goes in `docs/review-log.md`. A test that fails
+because the app is wrong is not corrected: report it.
