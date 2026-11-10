@@ -35,7 +35,7 @@ Seed file: tests/seed.spec.ts.
 **Steps:**
   1. Open the page and add nothing.
     - expect: empty-order shows 'Add visitors to see a price'.
-    - expect: order-total is not visible.
+    - expect: order-total is not in the page (count 0).
     - expect: No visitor-row is shown.
 
 #### 2.2. [REQ-3.4] risk 3: an order of only free tickets is not empty and totals €0.00
@@ -72,9 +72,9 @@ Seed file: tests/seed.spec.ts.
 No scenario is written for these; the requirement is silent or vague. App behaviour is given as information only.
 
 1. REQ-3.1: Must the total line carry the 'Total: ' prefix? REQ-3.4 shows 'Total: €0.00'; REQ-3.1 only specifies the amount format. The plan asserts the REQ-3.4 form for every total. Please confirm it applies to all totals.
-2. REQ-3.2: Must the total be absent from the page, or only hidden? The scenario asserts it is not visible, which allows either.
+2. REQ-3.2: absent or hidden. Answered on issue #4: absent, not in the page.
 3. REQ-3.3: In what order must the line items appear? Observed: order added, with new visitors at the end. Not asserted.
-4. REQ-3.4: 'Free appears only as its category label': does this cover other text on the line, such as the remove control's accessible name? Observed: the remove button name is 'Remove visitor N, aged X', with no 'Free'. Only ticket-price is asserted.
+4. REQ-3.4: 'Free' only as category label. Answered on issue #4: confirmed, the remove button name has no category.
 5. REQ-2.5 and REQ-3.1: Should the group discount note be shown (see question 1 in the prices plan)? It is not asserted here.
 6. Display and accessibility (risk 4): no requirement supports a check; none planned.
 
@@ -88,12 +88,12 @@ None. In exploration the displayed rounding (€8.51, €11.91), the sum of roun
 
 ### 5. Coverage list (REQ id to scenarios)
 
-- REQ-3.1: two children at 8 tickets (€8.51, €17.02 pair); sum of rounded prices (€83.37); format in a mixed order (€41.58); rounding function and format function at Vitest. Question 1 open.
-- REQ-3.2: empty order shows message and no total (also checked after the last removal in the order plan). Question 2 open.
+- REQ-3.1: two children at 8 tickets (€8.51, €17.02 pair); rounding function and format function at Vitest. Question 1 open.
+- REQ-3.2: empty order shows message and no total element (also checked after the last removal in the order plan).
 - REQ-3.3: two visitors of the same age are two lines. Question 3 open.
-- REQ-3.4: free-only order is not empty with €0.00 total; free ticket shows €0.00 and Free only as label. Question 4 open.
+- REQ-3.4: free-only order is not empty with €0.00 total; free ticket shows €0.00 and Free only as label.
 - Gaps: none.
 
-Scenario count: 7.
+Scenario count: 5.
 
 **Seed:** `tests/seed.spec.ts`

@@ -4,7 +4,9 @@
 
 Scope: REQ-1.1 to REQ-1.5 of the ticket price calculator (http://localhost:5173), the order-building behaviour: adding visitors by age, age validation, the 10-ticket limit, refusal messages and removal. Source of truth is requirements/order.md. Priorities follow docs/test-strategy.md section 1 (risk 2 = input wrongly accepted or refused: REQ-1.2, 1.3, 1.5; risk 3 = screen out of step with the order: REQ-1.1, 1.4). Within each risk, boundaries come first. Level follows section 2: Playwright covers what a visitor does and sees. Every scenario starts from a fresh page at `/` (empty order) and is independent. Locators: test ids age-input, add-visitor-button, age-error, visitor-row, category-label, ticket-price, remove-visitor-button, order-total, empty-order, or roles. No fixed waits; use web-first assertions. Expected values come from the requirements. Out of scope (section 5): performance, browsers other than Chromium, visual design. Display and accessibility (risk 4): no requirement supports a check, so none is planned (see questions).
 
-Covered at Vitest level (not repeated in the browser): the full age-parsing rule table of REQ-1.2 is a pure-function concern. Vitest should hold every accepted and rejected string (digits only, surrounding spaces, "007", "5.0", "+5", "-5", "1e1", text, 121, 120, 0, empty and whitespace-only) and the mapping from age to category at the REQ-2.x boundaries (0, 5/6, 17/18, 64/65, 120). In the browser we check one example per input class and the two age edges (0/120 accepted, 121 rejected), so the screen is shown to apply the rule and show each message.
+Covered at Vitest level (not repeated in the browser): the full age-parsing rule table of REQ-1.2 is a pure-function concern. Vitest should hold every accepted and rejected string (digits only, surrounding spaces, "007", "5.0", "+5", "-5", "1e1", text, 121, 120, 0, empty and whitespace-only) and the mapping from age to category at the REQ-2.x boundaries (0, 5/6, 17/18, 64/65, 120). In the browser we check one example per input class and one example per input class: 121 (above the maximum), 5.0 (not a whole number) and an empty field.
+
+Exception: REQ-1.4 says prices and total are "already correct" after the click. A retrying assertion would also pass on a late update, so O2.2 reads the total once right after the click, and a marker on window shows there was no reload.
 
 Seed file: tests/seed.spec.ts.
 
@@ -110,15 +112,17 @@ Seed file: tests/seed.spec.ts.
     - expect: age-error is no longer shown.
     - expect: Nine visitor-row items remain.
 
-#### 1.10. [REQ-1.5][REQ-1.2] risk 2: a refusal message stays while the user is typing
+#### 1.10. [REQ-1.5][REQ-1.2] risk 2: a refusal message stays while the user is typing or clearing the field
 
 **File:** `tests/generated/order-messages.spec.ts`
 
 **Steps:**
   1. Open the page, enter 'abc', click add-visitor-button.
     - expect: age-error is shown with the invalid-age message.
-  2. Clear age-input and type '3' without clicking add-visitor-button.
-    - expect: age-error is still shown with the same message while the field text changes.
+  2. Clear age-input (fill it with an empty string) without clicking add-visitor-button.
+    - expect: age-error is still shown with the same message.
+  3. Type '3' in age-input without clicking add-visitor-button.
+    - expect: age-error is still shown with the same message.
 
 #### 1.11. [REQ-1.3][REQ-1.4] risk 2: after removing one of 10 tickets a new visitor can be added again
 
@@ -132,6 +136,8 @@ Seed file: tests/seed.spec.ts.
 
 #### 1.12. [REQ-1.2] risk 2: a refused age leaves the existing lines and total unchanged
 
+**File:** `tests/generated/order-messages.spec.ts`
+
 **Steps:**
   1. Open the page. Add age 30, then age 12.
     - expect: order-total shows 'Total: €28.35'.
@@ -141,6 +147,8 @@ Seed file: tests/seed.spec.ts.
 
 #### 1.13. [REQ-1.5][REQ-1.2] risk 2: a refusal message disappears after a visitor is removed
 
+**File:** `tests/generated/order-messages.spec.ts`
+
 **Steps:**
   1. Open the page. Add age 30, then enter 'abc' and click add-visitor-button.
     - expect: age-error is shown.
@@ -148,6 +156,8 @@ Seed file: tests/seed.spec.ts.
     - expect: age-error is no longer shown and empty-order is shown.
 
 #### 1.14. [REQ-1.5][REQ-1.3] risk 2: the limit message stays while the user is typing
+
+**File:** `tests/generated/order-messages.spec.ts`
 
 **Steps:**
   1. Open the page, add ten visitors of age 30, then try an 11th so the limit message shows.
@@ -173,9 +183,10 @@ Seed file: tests/seed.spec.ts.
 **Steps:**
   1. Open the page. Add ages 30, 12, 3 (Adult, Child, Free).
     - expect: Total is 'Total: €28.35' (18.90 + 9.45 + 0.00).
-  2. Click remove-visitor-button on the Child row (found by category-label, not by position).
-    - expect: Two rows remain: Adult at €18.90 and Free at €0.00.
-    - expect: order-total shows 'Total: €18.90' with no reload and no further action.
+  2. Set a marker on the page (evaluate: window.__marker = 1). Click remove-visitor-button on the Child row, and read the order-total text once straight after the click, with no retry.
+    - expect: The total read right after the click is 'Total: €18.90'.
+    - expect: The marker is still on the page, so there was no reload.
+    - expect: Two rows remain: Adult at €18.90 and Free at €0.00 (normal retrying checks).
 
 #### 2.3. [REQ-1.4][REQ-2.5] risk 3: removing the 8th ticket takes the group discount away at once
 
@@ -195,19 +206,19 @@ Seed file: tests/seed.spec.ts.
   1. Open the page, add age 30, click remove-visitor-button.
     - expect: No visitor-row is shown.
     - expect: empty-order shows 'Add visitors to see a price'.
-    - expect: order-total is not shown.
+    - expect: order-total is not in the page (count 0).
 
 ### 3. Questions for the PO
 
 No scenario is written for these; the requirement is silent or vague. App behaviour is given as information only.
 
-1. REQ-1.2: Is a field containing only spaces 'empty' (message 'Enter an age') or 'any other invalid age'? Observed: the app shows 'Enter an age'.
-2. REQ-1.2: Are other whitespace characters (tab, non-breaking space) and non-ASCII digits (full-width, Arabic-Indic) 'spaces' and 'digits'? Not observed. Is there a limit on how many leading zeros are accepted (for example '00000000007')?
-3. REQ-1.2: After a successful add, or after a rejection, should the age field be cleared or keep its text, and where should focus go? Observed: the field is empty after a successful add.
+1. REQ-1.2: spaces-only field. Answered on issue #2: counts as empty, message 'Enter an age'.
+2. REQ-1.2: other whitespace, non-ASCII digits, long zero strings. Out of scope (docs/test-strategy.md, section 5).
+3. REQ-1.2: field after an add. Answered on issue #2: cleared after a successful add, text kept after a refusal. Focus is still open.
 4. REQ-1.1: Can a visitor be added by pressing Enter in the age field, or only with the button? Not specified.
 5. REQ-1.1: Should the order line show the entered age, and in what form for '007' (7 or 007)? Observed: 'Age 7'. Where does a new visitor appear? Observed: at the end of the list.
 6. REQ-1.3: When the 11th visitor is refused, is the typed age kept or cleared? Not specified.
-7. REQ-1.5: Does a refusal message also go away when the user corrects or clears the field, or when a different refusal replaces it? The requirement only says it stays while typing and goes after a successful add or a remove. Observed: it stays while typing.
+7. REQ-1.5: clearing the field. Answered on issue #2: clearing counts as typing, the message stays. Whether a different refusal replaces the message is still open.
 8. REQ-1.4: Is anything required of the remove control (accessible name, keyboard use)? Observed: a button named 'Remove visitor N, aged X'. Not required, so not asserted.
 9. Display and accessibility (strategy risk 4): must the refusal message be announced to assistive technology or associated with the field? No requirement says so, so no check is planned. Observed: age-error has role alert.
 
@@ -222,12 +233,12 @@ None. In exploration the app agreed with every requirement exercised here: messa
 ### 5. Coverage list (REQ id to scenarios)
 
 - REQ-1.1: 'a visitor appears in the order with its price category'.
-- REQ-1.2: 120, 121, 0, '007', spaces, invalid values (5.0, +5, -5, 1e1, abc), empty; the two scenarios at 10 tickets; refusal-message scenarios. The full rule table is at Vitest level. Questions 1 to 3 open.
+- REQ-1.2: 121, 5.0, empty; a refused age leaves lines and total unchanged; the two scenarios at 10 tickets; refusal-message scenarios. The full rule table is at Vitest level. Question 3 open (focus).
 - REQ-1.3: 10th accepted and 11th refused, free tickets count, invalid age at 10, empty age at 10, add again after removal, limit message cleared on remove. Question 6 open.
 - REQ-1.4: remove middle visitor, remove 8th ticket, remove last visitor, add again after removal from 10, limit message cleared on remove.
-- REQ-1.5: cleared after successful add, cleared after remove, stays while typing. Question 7 open.
+- REQ-1.5: cleared after successful add, cleared after remove (1.13), stays while typing or clearing (1.10), limit message stays while typing (1.14). Question 7 open.
 - Gaps: none. Display and accessibility has no scenario (question 9).
 
-Scenario count: 19 (the invalid-value scenario is one scenario run as five parameterised tests).
+Scenario count: 18.
 
 **Seed:** `tests/seed.spec.ts`
