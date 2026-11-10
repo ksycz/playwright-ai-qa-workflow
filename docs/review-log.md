@@ -105,3 +105,11 @@ Newest entry last. Log a correction in the same commit as the change.
 - **Correction:** I put them out of scope in `docs/test-strategy.md`. The requirements say only "spaces" and "digits", and the app trims more than that, so a test would record the app's behaviour instead of a requirement.
 - **Why:** `CLAUDE.md`: write tests to the requirements, never the other way round.
 - **Kind:** other
+
+### 2026-11-10: category rows matched by loose text
+
+- **Stage:** generated test
+- **AI output:** The five prices tests found the Free, Child, Adult and Senior rows with `getByText('Free')` and the like, copied from `tests/seed.spec.ts`. That matches any casing and any text containing the word.
+- **Correction:** I changed every category locator to `getByText('...', { exact: true })` in the five tests and in the seed.
+- **Why:** REQ-1.1 names the four labels exactly. A row labelled "free" or "Freebie" must fail.
+- **Kind:** weak locator
