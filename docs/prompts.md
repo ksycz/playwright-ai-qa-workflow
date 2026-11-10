@@ -60,4 +60,16 @@ Why each part is there:
   from the requirements, so its values are independent of what the planner
   wrote. The difference between the two is where the findings are.
 
+Save each output unedited before the plan is changed, so the review can be
+checked later (the header and file names are in
+[`reviews/README.md`](reviews/README.md)):
+
+```
+Write that output, unedited, to docs/reviews/m2-plan-review.md.
+```
+
+```
+Write that output, unedited, to docs/reviews/m2-derive-test-data.md.
+```
+
 Each real finding becomes an entry in `docs/review-log.md`.
