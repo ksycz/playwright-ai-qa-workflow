@@ -6,7 +6,7 @@
 
 ## Acceptance criteria
 
-- **REQ-1.1** A visitor can be added by entering their age. The visitor appears in the order with their price category: Free, Child, Adult or Senior. A visitor can be added by entering their age. The visitor appears in the order with their price category: Free, Child, Adult or Senior. After a successful add, the age field is cleared.
+- **REQ-1.1** A visitor can be added by entering their age. The visitor appears in the order with their price category: Free, Child, Adult or Senior. After a successful add, the age field is cleared.
 - **REQ-1.2** An age is a whole number from 0 to 120. Only digits are accepted, and spaces around them are ignored. Leading zeros are accepted: "007" is age 7 and "000" is age 0. "5.0", "+5", "-5", "1e1", text and numbers above 120 are rejected, including "0121" (age 121). A field with only spaces counts as empty. No visitor is added when the age is rejected, and a message is shown:
   - empty field (including only spaces): "Enter an age"
   - any other invalid age: "Age must be a whole number from 0 to 120"
