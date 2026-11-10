@@ -1,45 +1,50 @@
 # Test strategy
 
 One page. It sets what we test first and why. The planner reads it before it
-plans, and the plan review checks the plan against it.
+plans, and `review-test-plan` checks the plan against it.
 
 ## 1. Risks, ranked
 
-1. **A wrong price or total.** A visitor pays the wrong amount. This is the
-   core of the product. REQ-2.1 to 2.5 (prices, discounts, thresholds),
-   REQ-3.1 (rounding, sum of tickets, euro format).
-2. **Input wrongly accepted or refused.** A bad age gets into the order, or a
-   good one is turned away. The 10-ticket limit lets in an 11th visitor.
-   REQ-1.2, REQ-1.3, REQ-1.5.
-3. **The order does not match what was done.** Add, remove and the empty
-   order leave the screen out of step with the order. REQ-1.1, REQ-1.4,
-   REQ-3.2 to 3.4.
-4. **Display and accessibility.** Labels, messages and focus are wrong, but
-   the numbers are right. Lowest risk here, so the fewest tests. No
-   requirement covers it, so it gets one light check at most.
+Ranked by what a wrong result costs the visitor, then by how likely the rule is
+to be got wrong. Boundaries (ages, 8 and 10 tickets, rounding) are the most
+likely place for a defect, so they are tested first inside each risk.
+
+1. **A wrong price or total.** The visitor pays the wrong amount. REQ-2.1 to
+   2.5 (categories, discounts, thresholds), REQ-3.1 (rounding, sum, format).
+2. **Input wrongly accepted or refused.** A bad age gets in, a good one is
+   turned away, or an 11th visitor is added. REQ-1.2, REQ-1.3, REQ-1.5.
+3. **The screen is out of step with the order.** Adding, removing and the empty
+   order show the wrong lines or total. REQ-1.1, REQ-1.4, REQ-3.2 to 3.4.
+4. **Display and accessibility.** Wrong labels or focus with correct numbers.
+   No requirement covers it, so at most one light check.
 
 ## 2. Test levels
 
-- **Vitest (unit):** the pricing rules in `pricing.ts`: age categories,
-  discounts, rounding, input parsing. Many values, fast, no browser.
-- **Playwright (end to end):** what a visitor does and sees: adding and
-  removing visitors, messages, line items, the total.
-- **No duplicates:** a rule is tested at one level. A price that Vitest
-  already checks is checked in the browser only once, to prove the screen
-  shows it.
+- **Vitest:** every pricing rule and every boundary value, fast, no browser.
+- **Playwright:** what a visitor does and sees, using one representative per
+  age category, the 7/8 and 10/11 ticket edges, each message, line items,
+  remove and the empty order.
+- **No duplicates:** a rule is tested at one level. A price Vitest already
+  proves is checked in the browser once, to show the screen displays it.
+- Each test starts from a fresh page and does not depend on another test.
 
 ## 3. AI and human roles
 
-The agents plan, generate and propose fixes. A human approves every plan,
-every test and every heal, and logs each correction in `docs/review-log.md`.
-The requirements come from the PO and are never written by the AI.
+- The agents plan, generate and propose fixes. A human approves every plan,
+  every test and every heal, and logs each correction in `docs/review-log.md`.
+- Gates in order: refinement of the requirements, then the plan review, then the
+  generated-test review. Nothing moves on until the gate is passed.
+- A requirement that is silent is a question to the PO on the GitHub Issue.
+  A test never guesses the rule.
+- A failing test is never skipped or loosened. `retries` stays at 0, so a
+  flaky test stays visible and gets diagnosed.
 
 ## 4. Test data
 
-Chosen by equivalence classes and boundary values, using `derive-test-data`,
-never by guesswork. Ages: 5/6, 17/18, 64/65, 0, 120, 121. Tickets: 7/8 for
-the group discount, 10/11 for the limit. Expected values are worked out from
-the requirements, not copied from the app.
+Chosen by equivalence classes and boundary values with `derive-test-data`,
+never by guesswork. Ages: 0, 5/6, 17/18, 64/65, 120, 121. Tickets: 7/8 for the
+group discount, 10/11 for the limit. Expected values are worked out from the
+requirements, not copied from the app.
 
 ## 5. Out of scope
 
@@ -48,6 +53,9 @@ tests are on the roadmap as a later idea).
 
 ## 6. Done
 
-- Every REQ id is covered by a test, or named as a gap.
-- Each planted bug is caught by at least one test.
-- CI is green, and lint and unit tests pass.
+- The traceability report shows every REQ id covered by a test, or named as a
+  gap with a reason.
+- Each planted bug is caught by at least one Playwright test, by name. (Vitest
+  runs without the bug flag, so it does not count here.)
+- Every correction of AI output is in the review log.
+- CI is green: lint, unit tests and end-to-end tests.
