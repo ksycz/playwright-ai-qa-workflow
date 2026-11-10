@@ -111,6 +111,7 @@ Playwright tests (`npm run e2e`) arrive in Milestone 2.
 | 5 | Traceability report and CI | Planned |
 | 6 | Final README with findings | Planned |
 | Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
+| Later | Mutation testing of `pricing.ts` with Stryker: change the rules on purpose and check that a test fails, the automatic version of the planted bugs. Code coverage of `pricing.ts` is already reported by `npm run coverage`; CI will run it in Milestone 5. | Idea |
 
 ## License
 
