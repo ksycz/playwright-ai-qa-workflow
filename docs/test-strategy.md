@@ -21,6 +21,8 @@ likely place for a defect, so they are tested first inside each risk.
 ## 2. Test levels
 
 - **Vitest:** every pricing rule and every boundary value, fast, no browser.
+  Coverage of `pricing.ts` (lines and branches) is reported. It is a check for
+  gaps, not a target to chase: it shows what ran, not what was checked.
 - **Playwright:** what a visitor does and sees, using one representative per
   age category, the 7/8 and 10/11 ticket edges, each message, line items,
   remove and the empty order.
@@ -57,5 +59,6 @@ tests are on the roadmap as a later idea).
   gap with a reason.
 - Each planted bug is caught by at least one Playwright test, by name. (Vitest
   runs without the bug flag, so it does not count here.)
+- Every line and branch of `pricing.ts` is covered, or the gap is explained.
 - Every correction of AI output is in the review log.
 - CI is green: lint, unit tests and end-to-end tests.
