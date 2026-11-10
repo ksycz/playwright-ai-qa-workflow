@@ -5,8 +5,9 @@ AI-planned and AI-generated Playwright tests, planted bugs, healing and a
 requirements-to-tests traceability report, with a human reviewing every step.
 
 > **Status:** work in progress. Milestone 1 (app, requirements, Claude Code
-> setup) is in review. The AI-driven parts arrive in Milestones 2 to 4. See
-> [Roadmap](#roadmap).
+> setup) is done. Milestone 2 is under way: the requirements are refined, and
+> the test strategy, the Playwright agents and the seed test are in place. The
+> AI-written test plan comes next. See [Roadmap](#roadmap).
 
 ## What this repo is for
 
@@ -45,7 +46,8 @@ product owner (PO); I play QA. The AI drafts, and a human decides at every step.
    vague wording and missing cases, then run the `refine-requirements` skill
    and compare the AI's questions with mine. Questions go to the PO as issue
    comments; the answers are copied into `requirements/`.
-3. **Test strategy.** One page, written by hand: ranked risks, which test
+3. **Test strategy.** One page, written by hand
+   ([`docs/test-strategy.md`](docs/test-strategy.md)): ranked risks, which test
    level checks what, what the AI does and what I decide, and what is out of
    scope.
 4. **Exploration and plan.** Playwright's planner agent explores the running
@@ -62,8 +64,9 @@ product owner (PO); I play QA. The AI drafts, and a human decides at every step.
 8. **Sign-off.** A traceability report in CI maps every requirement to the
    tests that cover it, or names it as a gap.
 
-Every correction I make to AI output is logged in `docs/review-log.md`
-(from Milestone 2). That log is the evidence that a human stays in control.
+Every correction I make to AI output is logged in
+[`docs/review-log.md`](docs/review-log.md). That log is the evidence that a
+human stays in control.
 
 ## The app
 
@@ -71,12 +74,15 @@ Add visitors by age and see each ticket's price and the order total.
 
 | Rule | Value |
 | --- | --- |
-| Full price | €18.90 |
+| Full price (adults, 18 to 64) | €18.90 |
 | Under 6 | free |
-| 6 to 17 | half price |
-| Seniors | 30% off |
-| 8 or more tickets | a further 10% off every ticket |
+| 6 to 17 | half of the adult price |
+| Seniors (65 and over) | 30% off the adult price |
+| 8 or more tickets | a further 10% off every ticket, after the age discount; free tickets count |
 | Order size | at most 10 tickets |
+
+The full rules, with exact messages and formats, are in
+[`requirements/`](requirements/).
 
 ## Run it
 
@@ -84,21 +90,28 @@ Requires Node 22.12 or later.
 
 ```bash
 npm ci
-npm test        # pricing unit tests (Vitest)
-npm run dev     # app at http://localhost:5173
-```
+npm run dev        # app at http://localhost:5173
+npm test           # pricing unit tests (Vitest)
+npm run coverage   # the same tests, with coverage of pricing.ts
+npm run lint       # Biome: format and lint (npm run format fixes)
 
-Playwright tests (`npm run e2e`) arrive in Milestone 2.
+npx playwright install chromium   # once
+npm run e2e        # Playwright tests (starts the app itself)
+```
 
 ## Repo layout
 
 | Path | What it holds |
 | --- | --- |
 | `requirements/` | Human-written requirements; AI agents are not allowed to edit them |
-| `app/` | The ticket price calculator (React, TypeScript, Vite) |
+| `app/` | The ticket price calculator (React, TypeScript, Vite) and its unit tests |
+| `tests/` | Playwright tests: `seed.spec.ts` by hand, `generated/` by the agent |
+| `specs/` | Test plans written by the planner agent |
+| `docs/` | Test strategy, conventions, review log and the skills index |
 | `CLAUDE.md` | Rules for Claude Code in this repo |
-| `.claude/` | Agent settings and QE skills |
-| `docs/skills.md` | Index of the QE skills: what each does and when to run it |
+| `.claude/` | The Playwright agents, QE skills and settings |
+| `.mcp.json` | The Playwright test server the agents use |
+| `playwright.config.ts`, `biome.json` | Test runner and format and lint settings |
 
 ## Roadmap
 
@@ -111,6 +124,7 @@ Playwright tests (`npm run e2e`) arrive in Milestone 2.
 | 5 | Traceability report and CI | Planned |
 | 6 | Final README with findings | Planned |
 | Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
+| Later | Mutation testing of `pricing.ts` with Stryker: change the rules on purpose and check that a test fails, the automatic version of the planted bugs. Code coverage of `pricing.ts` is already reported by `npm run coverage`; CI will run it in Milestone 5. | Idea |
 
 ## License
 
