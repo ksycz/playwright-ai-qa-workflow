@@ -82,7 +82,7 @@ No scenario is written for these; the requirement is silent or vague. App behavi
 
 ### 4. Findings
 
-None. In exploration the displayed rounding (€8.51, €11.91), the sum of rounded prices (€83.37 for the mixed 8-ticket order), the empty-order message with no total, the free-only total of €0.00 and the separate lines for equal ages all matched the values worked out from the requirements.
+None. In exploration the displayed rounding (€8.51, €11.91), the sum of rounded prices (€17.02 for two children at 8 tickets), the empty-order message with no total, the free-only total of €0.00 and the separate lines for equal ages all matched the values worked out from the requirements.
 
 **Seed:** `tests/seed.spec.ts`
 
