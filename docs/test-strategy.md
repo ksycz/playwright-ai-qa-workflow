@@ -53,6 +53,8 @@ requirements, not copied from the app.
 Performance and load, browsers other than Chromium, and visual design (visual
 tests are on the roadmap as a later idea).
 
+Whitespace other than the space character and non-ASCII digits: not specified, not tested.
+
 ## 6. Done
 
 - The traceability report shows every REQ id covered by a test, or named as a
