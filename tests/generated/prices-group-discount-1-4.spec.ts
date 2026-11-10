@@ -19,10 +19,10 @@ test.describe('Risk 1 - Wrong price or total: group discount thresholds (boundar
 
     const seniorRow = page
       .getByTestId('visitor-row')
-      .filter({ has: page.getByTestId('category-label').getByText('Senior') });
+      .filter({ has: page.getByTestId('category-label').getByText('Senior', { exact: true }) });
     const adultRows = page
       .getByTestId('visitor-row')
-      .filter({ has: page.getByTestId('category-label').getByText('Adult') });
+      .filter({ has: page.getByTestId('category-label').getByText('Adult', { exact: true }) });
 
     // expect: The Senior row shows €11.91 (13.23 less 10% = 11.907, rounded). A simple 40% off would give €11.34 and is wrong.
     await expect(seniorRow.getByTestId('ticket-price')).toHaveText(['€11.91']);

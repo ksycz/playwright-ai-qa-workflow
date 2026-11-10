@@ -15,7 +15,7 @@ test('[REQ-1.1][REQ-2.1][REQ-3.1] an adult is added and priced at €18.90', asy
 
   const row = page
     .getByTestId('visitor-row')
-    .filter({ has: page.getByTestId('category-label').getByText('Adult') });
+    .filter({ has: page.getByTestId('category-label').getByText('Adult', { exact: true }) });
 
   // Expected values come from the requirements, not from what the screen happens to show.
   // These assertions retry on their own until they pass or time out, so there is no need for a fixed wait.

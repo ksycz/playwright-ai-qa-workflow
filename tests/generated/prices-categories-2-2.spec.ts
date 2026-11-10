@@ -15,10 +15,10 @@ test.describe('Risk 1 - Wrong price: the age edges 5/6 and 64/65 (fewer than 8 t
 
     const adultRow = page
       .getByTestId('visitor-row')
-      .filter({ has: page.getByTestId('category-label').getByText('Adult') });
+      .filter({ has: page.getByTestId('category-label').getByText('Adult', { exact: true }) });
     const seniorRow = page
       .getByTestId('visitor-row')
-      .filter({ has: page.getByTestId('category-label').getByText('Senior') });
+      .filter({ has: page.getByTestId('category-label').getByText('Senior', { exact: true }) });
 
     // expect: One Adult row with ticket-price €18.90.
     await expect(adultRow.getByTestId('ticket-price')).toHaveText(['€18.90']);

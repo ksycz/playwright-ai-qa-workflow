@@ -17,10 +17,10 @@ test.describe('Risk 1 - Wrong price or total: group discount thresholds (boundar
 
     const freeRow = page
       .getByTestId('visitor-row')
-      .filter({ has: page.getByTestId('category-label').getByText('Free') });
+      .filter({ has: page.getByTestId('category-label').getByText('Free', { exact: true }) });
     const adultRows = page
       .getByTestId('visitor-row')
-      .filter({ has: page.getByTestId('category-label').getByText('Adult') });
+      .filter({ has: page.getByTestId('category-label').getByText('Adult', { exact: true }) });
 
     // expect: The Free row shows €0.00.
     await expect(freeRow.getByTestId('ticket-price')).toHaveText(['€0.00']);
