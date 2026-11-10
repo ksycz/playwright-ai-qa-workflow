@@ -11,6 +11,9 @@ history of `specs/`.
 | --- | --- | --- | --- |
 | `m2-plan-review.md` | `review-test-plan` | `specs/` | 2 |
 | `m2-derive-test-data.md` | `derive-test-data` | `requirements/` | 2 |
+| `summary.md` | both (written by hand) | the two files above | 2 |
+
+`summary.md` is a reading aid, not raw output, so it may be edited.
 
 Later runs get the same naming: the milestone, then what was reviewed
 (for example `m3-generated-test-review.md`).
