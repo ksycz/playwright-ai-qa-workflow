@@ -33,3 +33,31 @@ Why each part is there:
 
 After the run, review the plan with `review-test-plan` and `derive-test-data`,
 edit it by hand, and log each correction in `docs/review-log.md`.
+
+## Plan review (Milestone 2)
+
+Run these in Claude Code, in the repo root, after the planner has written
+`specs/`. Write your own expectations first (which REQ ids, which boundaries,
+where you expect the planner to guess), and commit the plan unedited before you
+change it.
+
+```
+Use the review-test-plan skill on specs/.
+```
+
+```
+Use the derive-test-data skill on the age rules and the ticket-count rules in
+requirements/.
+```
+
+Why each part is there:
+
+- **`review-test-plan` on `specs/`:** checks every REQ id against the
+  scenarios, the priorities against `docs/test-strategy.md`, boundaries,
+  negative cases, vague expected results, and lists every assumption as a
+  question for the PO.
+- **`derive-test-data` on `requirements/`, not on the plan:** it works only
+  from the requirements, so its values are independent of what the planner
+  wrote. The difference between the two is where the findings are.
+
+Each real finding becomes an entry in `docs/review-log.md`.
