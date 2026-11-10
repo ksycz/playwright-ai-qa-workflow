@@ -104,12 +104,13 @@ Playwright tests (`npm run e2e`) arrive in Milestone 2.
 
 | Milestone | Content | Status |
 | --- | --- | --- |
-| 1 | App, requirements, Claude Code setup | In review |
-| 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | Planned |
+| 1 | App, requirements, Claude Code setup | Done |
+| 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | In progress |
 | 3 | AI-generated tests and their review | Planned |
 | 4 | Planted bugs, bug reports and the healer | Planned |
 | 5 | Traceability report and CI | Planned |
 | 6 | Final README with findings | Planned |
+| Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
 
 ## License
 
