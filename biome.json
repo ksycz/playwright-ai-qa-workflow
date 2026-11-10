@@ -7,14 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": [
-      "**",
-      "!package-lock.json",
-      "!.claude",
-      "!specs",
-      "!**/*.md",
-      "!.mcp.json"
-    ]
+    "includes": ["**", "!package-lock.json", "!.claude", "!specs", "!**/*.md", "!.mcp.json"]
   },
   "formatter": {
     "enabled": true,
