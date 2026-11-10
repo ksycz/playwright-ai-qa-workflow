@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
   addVisitor,
+  type Category,
   categoryFor,
   formatEuro,
   parseAge,
   quote,
   ticketCents,
-  type Category,
 } from './pricing';
 
 describe('pricing', () => {
@@ -21,13 +21,21 @@ describe('pricing', () => {
 
   it('allows at most 10 tickets', () => {
     expect(addVisitor(Array(9).fill(30), 40)).toEqual({ ages: [...Array(9).fill(30), 40] });
-    expect(addVisitor(Array(10).fill(30), 40)).toEqual({ error: 'An order can have at most 10 tickets' });
+    expect(addVisitor(Array(10).fill(30), 40)).toEqual({
+      error: 'An order can have at most 10 tickets',
+    });
   });
 
   it('puts each age in its category', () => {
     const cases: [number, Category][] = [
-      [0, 'free'], [5, 'free'], [6, 'child'], [17, 'child'],
-      [18, 'adult'], [64, 'adult'], [65, 'senior'], [120, 'senior'],
+      [0, 'free'],
+      [5, 'free'],
+      [6, 'child'],
+      [17, 'child'],
+      [18, 'adult'],
+      [64, 'adult'],
+      [65, 'senior'],
+      [120, 'senior'],
     ];
     for (const [age, cat] of cases) expect(categoryFor(age)).toBe(cat);
   });

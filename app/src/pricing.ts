@@ -39,7 +39,11 @@ export function ticketCents(age: number, ticketCount: number): number {
   return Math.round((BASE_CENTS * AGE_PERCENT[categoryFor(age)] * groupPercent) / 10000);
 }
 
-export function quote(ages: number[]): { lines: Line[]; totalCents: number; groupDiscount: boolean } {
+export function quote(ages: number[]): {
+  lines: Line[];
+  totalCents: number;
+  groupDiscount: boolean;
+} {
   const lines = ages.map((age) => ({
     age,
     category: categoryFor(age),

@@ -13,13 +13,16 @@
     "build": "tsc --noEmit -p tsconfig.json && vite build app",
     "test": "vitest run",
     "e2e": "playwright test",
-    "trace": "tsx scripts/traceability.ts"
+    "trace": "tsx scripts/traceability.ts",
+    "lint": "biome check .",
+    "format": "biome check --write ."
   },
   "dependencies": {
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.6",
     "@playwright/test": "^1.65.0",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",

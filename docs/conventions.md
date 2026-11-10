@@ -43,3 +43,11 @@ follow this file, so the rules live in one place.
 
 Every correction a human makes to AI output (plan, test or heal) gets an
 entry in `docs/review-log.md`, in the format at the top of that file.
+
+## Format and lint
+
+Biome formats the code and enforces the mechanical rules above: no
+`waitForTimeout`, no skipped or focused tests, no `networkidle`, no
+`page.pause()`, no forced clicks. Run `npm run lint` to check and
+`npm run format` to fix what can be fixed. Lint does not replace review: it
+cannot tell whether an assertion matches a requirement.
