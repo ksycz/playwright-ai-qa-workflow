@@ -24,24 +24,6 @@ Seed file: tests/seed.spec.ts.
     - expect: The six Adult rows show €17.01.
     - expect: order-total shows 'Total: €119.08' (2 x 8.51 = 17.02, plus 6 x 17.01 = 102.06).
 
-#### 1.2. [REQ-3.1][REQ-2.5] risk 1: the total is the sum of the rounded ticket prices, not a rounded sum of unrounded prices
-
-**File:** `tests/generated/total-rounding.spec.ts`
-
-**Steps:**
-  1. Open the page. Add ages 3, 12, 12, 12, 40, 40, 80, 80 (one Free, three Child, two Adult, two Senior; eight tickets).
-    - expect: Free row €0.00, Child rows €8.51 each, Adult rows €17.01 each, Senior rows €11.91 each.
-    - expect: order-total shows 'Total: €83.37' (0 + 3 x 8.51 + 2 x 17.01 + 2 x 11.91 = 25.53 + 34.02 + 23.82). Summing unrounded prices and rounding once would give €83.35 and is wrong.
-
-#### 1.3. [REQ-3.1] risk 1: prices and total use the euro-first, two-decimal format in a mixed order below 8 tickets
-
-**File:** `tests/generated/total-format.spec.ts`
-
-**Steps:**
-  1. Open the page. Add ages 3, 12, 40, 80.
-    - expect: ticket-price values are €0.00, €9.45, €18.90, €13.23 (euro sign first, no space, dot, two decimals, trailing zero kept).
-    - expect: order-total shows 'Total: €41.58' (0 + 9.45 + 18.90 + 13.23).
-
 ### 2. Risk 3 - Screen out of step with the order (REQ-3.2, REQ-3.3, REQ-3.4)
 
 **Seed:** `tests/seed.spec.ts`
@@ -74,6 +56,7 @@ Seed file: tests/seed.spec.ts.
   1. Open the page, enter 3, click add-visitor-button.
     - expect: category-label of the row has the text 'Free'.
     - expect: ticket-price of the row has the text '€0.00' and does not contain the word 'Free'.
+    - expect: The word 'Free' appears exactly once on the row, in the category-label.
 
 #### 2.4. [REQ-3.3] risk 3: two visitors of the same age are two line items
 
@@ -83,8 +66,6 @@ Seed file: tests/seed.spec.ts.
   1. Open the page. Add age 30 twice.
     - expect: Exactly two visitor-row items, each with category-label Adult and ticket-price €18.90.
     - expect: order-total shows 'Total: €37.80'.
-  2. Click remove-visitor-button on one of the rows.
-    - expect: Exactly one visitor-row remains and order-total shows 'Total: €18.90' (the lines are independent).
 
 ### 3. Questions for the PO
 

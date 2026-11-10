@@ -60,40 +60,25 @@ Seed file: tests/seed.spec.ts.
 
 **Seed:** `tests/seed.spec.ts`
 
-#### 2.1. [REQ-2.2] risk 1: a child under 6 goes free
+#### 2.1. [REQ-2.2][REQ-2.3] risk 1: age 5 is Free and age 6 is a Child
 
 **File:** `tests/generated/prices-categories.spec.ts`
 
 **Steps:**
-  1. Open the page, enter 3, click add-visitor-button.
-    - expect: One visitor-row with category-label Free and ticket-price €0.00.
-
-#### 2.2. [REQ-2.3] risk 1: a visitor aged 6 to 17 pays half the adult price
-
-**File:** `tests/generated/prices-categories.spec.ts`
-
-**Steps:**
-  1. Open the page, enter 12, click add-visitor-button.
-    - expect: One visitor-row with category-label Child and ticket-price €9.45 (18.90 / 2).
+  1. Open the page. Add age 5, then age 6.
+    - expect: One Free row with ticket-price €0.00.
+    - expect: One Child row with ticket-price €9.45.
     - expect: order-total shows 'Total: €9.45'.
 
-#### 2.3. [REQ-2.1] risk 1: an adult pays the full price
+#### 2.2. [REQ-2.1][REQ-2.4] risk 1: age 64 is an Adult and age 65 is a Senior
 
 **File:** `tests/generated/prices-categories.spec.ts`
 
 **Steps:**
-  1. Open the page, enter 40, click add-visitor-button.
-    - expect: One visitor-row with category-label Adult and ticket-price €18.90.
-    - expect: order-total shows 'Total: €18.90'.
-
-#### 2.4. [REQ-2.4] risk 1: a senior gets 30% off the adult price
-
-**File:** `tests/generated/prices-categories.spec.ts`
-
-**Steps:**
-  1. Open the page, enter 80, click add-visitor-button.
-    - expect: One visitor-row with category-label Senior and ticket-price €13.23 (18.90 x 0.7).
-    - expect: order-total shows 'Total: €13.23'.
+  1. Open the page. Add age 64, then age 65.
+    - expect: One Adult row with ticket-price €18.90.
+    - expect: One Senior row with ticket-price €13.23.
+    - expect: order-total shows 'Total: €32.13'.
 
 ### 3. Questions for the PO
 

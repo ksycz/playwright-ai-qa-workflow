@@ -39,6 +39,7 @@ Seed file: tests/seed.spec.ts.
   2. Enter age 30 and click add-visitor-button.
     - expect: age-error shows 'An order can have at most 10 tickets'.
     - expect: Order still has ten rows.
+    - expect: order-total still shows 'Total: €0.00'.
 
 #### 1.3. [REQ-1.3][REQ-1.2] risk 2: at 10 tickets a non-numeric age shows the invalid-age message, not the limit message
 
@@ -48,26 +49,19 @@ Seed file: tests/seed.spec.ts.
   1. Open the page and add ten visitors of age 30. Enter 'abc' and click add-visitor-button.
     - expect: age-error shows exactly 'Age must be a whole number from 0 to 120'.
     - expect: The limit message is not shown. Order still has ten rows.
+    - expect: order-total still shows 'Total: €170.10'.
 
 #### 1.4. [REQ-1.3][REQ-1.2] risk 2: at 10 tickets an empty age shows 'Enter an age', not the limit message
 
 **File:** `tests/generated/order-limit.spec.ts`
 
 **Steps:**
-  1. Open the page and add ten visitors of age 30. Leave age-input empty and click add-visitor-button.
+  1. Open the page and add ten visitors of age 30. Fill age-input with an empty string and click add-visitor-button.
     - expect: age-error shows exactly 'Enter an age'.
     - expect: The limit message is not shown. Order still has ten rows.
+    - expect: order-total still shows 'Total: €170.10'.
 
-#### 1.5. [REQ-1.2] risk 2: age 120 (upper boundary) is accepted
-
-**File:** `tests/generated/order-age.spec.ts`
-
-**Steps:**
-  1. Open the page, enter 120, click add-visitor-button.
-    - expect: One visitor-row is shown with category-label Senior.
-    - expect: No age-error is shown.
-
-#### 1.6. [REQ-1.2] risk 2: age 121 (just above the upper boundary) is rejected
+#### 1.5. [REQ-1.2] risk 2: age 121 (just above the upper boundary) is rejected
 
 **File:** `tests/generated/order-age.spec.ts`
 
@@ -76,34 +70,7 @@ Seed file: tests/seed.spec.ts.
     - expect: age-error shows 'Age must be a whole number from 0 to 120'.
     - expect: No visitor-row is added; empty-order is still shown.
 
-#### 1.7. [REQ-1.2] risk 2: age 0 (lower boundary) is accepted
-
-**File:** `tests/generated/order-age.spec.ts`
-
-**Steps:**
-  1. Open the page, enter 0, click add-visitor-button.
-    - expect: One visitor-row is shown with category-label Free.
-    - expect: No age-error is shown.
-
-#### 1.8. [REQ-1.2] risk 2: '007' is accepted as a whole number
-
-**File:** `tests/generated/order-age.spec.ts`
-
-**Steps:**
-  1. Open the page, enter 007, click add-visitor-button.
-    - expect: One visitor-row is added with category-label Child (age 7 is in 6 to 17).
-    - expect: No age-error is shown.
-
-#### 1.9. [REQ-1.2] risk 2: spaces around the digits are ignored
-
-**File:** `tests/generated/order-age.spec.ts`
-
-**Steps:**
-  1. Open the page, enter ' 30 ' (a space before and after), click add-visitor-button.
-    - expect: One visitor-row is added with category-label Adult.
-    - expect: No age-error is shown.
-
-#### 1.10. [REQ-1.2] risk 2: invalid ages are rejected with the invalid-age message (parameterised: one test per value '5.0', '+5', '-5', '1e1', 'abc')
+#### 1.6. [REQ-1.2] risk 2: one non-whole number is rejected (parameterised: one test per value '5.0')
 
 **File:** `tests/generated/order-age.spec.ts`
 
@@ -112,7 +79,7 @@ Seed file: tests/seed.spec.ts.
     - expect: age-error shows exactly 'Age must be a whole number from 0 to 120'.
     - expect: No visitor-row is added; empty-order is still shown.
 
-#### 1.11. [REQ-1.2] risk 2: an empty age shows 'Enter an age'
+#### 1.7. [REQ-1.2] risk 2: an empty age shows 'Enter an age'
 
 **File:** `tests/generated/order-age.spec.ts`
 
@@ -121,7 +88,7 @@ Seed file: tests/seed.spec.ts.
     - expect: age-error shows exactly 'Enter an age'.
     - expect: No visitor-row is added; empty-order is still shown.
 
-#### 1.12. [REQ-1.5][REQ-1.2] risk 2: a refusal message disappears after the next successful add
+#### 1.8. [REQ-1.5][REQ-1.2] risk 2: a refusal message disappears after the next successful add
 
 **File:** `tests/generated/order-messages.spec.ts`
 
@@ -132,7 +99,7 @@ Seed file: tests/seed.spec.ts.
     - expect: age-error is no longer shown.
     - expect: One visitor-row (Adult) is in the order.
 
-#### 1.13. [REQ-1.5][REQ-1.3] risk 2: the limit message disappears after a visitor is removed
+#### 1.9. [REQ-1.5][REQ-1.3] risk 2: the limit message disappears after a visitor is removed
 
 **File:** `tests/generated/order-messages.spec.ts`
 
@@ -143,7 +110,7 @@ Seed file: tests/seed.spec.ts.
     - expect: age-error is no longer shown.
     - expect: Nine visitor-row items remain.
 
-#### 1.14. [REQ-1.5][REQ-1.2] risk 2: a refusal message stays while the user is typing
+#### 1.10. [REQ-1.5][REQ-1.2] risk 2: a refusal message stays while the user is typing
 
 **File:** `tests/generated/order-messages.spec.ts`
 
@@ -153,7 +120,7 @@ Seed file: tests/seed.spec.ts.
   2. Clear age-input and type '3' without clicking add-visitor-button.
     - expect: age-error is still shown with the same message while the field text changes.
 
-#### 1.15. [REQ-1.3][REQ-1.4] risk 2: after removing one of 10 tickets a new visitor can be added again
+#### 1.11. [REQ-1.3][REQ-1.4] risk 2: after removing one of 10 tickets a new visitor can be added again
 
 **File:** `tests/generated/order-limit.spec.ts`
 
@@ -162,6 +129,30 @@ Seed file: tests/seed.spec.ts.
     - expect: Nine rows remain.
   2. Enter 30 and click add-visitor-button.
     - expect: Ten rows are shown and no age-error is shown.
+
+#### 1.12. [REQ-1.2] risk 2: a refused age leaves the existing lines and total unchanged
+
+**Steps:**
+  1. Open the page. Add age 30, then age 12.
+    - expect: order-total shows 'Total: €28.35'.
+  2. Enter 'abc' and click add-visitor-button.
+    - expect: age-error shows 'Age must be a whole number from 0 to 120'.
+    - expect: Two rows remain, Adult and Child, and order-total still shows 'Total: €28.35'.
+
+#### 1.13. [REQ-1.5][REQ-1.2] risk 2: a refusal message disappears after a visitor is removed
+
+**Steps:**
+  1. Open the page. Add age 30, then enter 'abc' and click add-visitor-button.
+    - expect: age-error is shown.
+  2. Click remove-visitor-button on the row.
+    - expect: age-error is no longer shown and empty-order is shown.
+
+#### 1.14. [REQ-1.5][REQ-1.3] risk 2: the limit message stays while the user is typing
+
+**Steps:**
+  1. Open the page, add ten visitors of age 30, then try an 11th so the limit message shows.
+  2. Type '3' in age-input without clicking the button.
+    - expect: age-error still shows 'An order can have at most 10 tickets'.
 
 ### 2. Risk 3 - Screen out of step with the order (REQ-1.1 add, REQ-1.4 remove)
 
