@@ -1,7 +1,12 @@
-import { useState, type FormEvent } from 'react';
-import { addVisitor, formatEuro, parseAge, quote, type Category } from './pricing';
+import { type FormEvent, useState } from 'react';
+import { addVisitor, type Category, formatEuro, parseAge, quote } from './pricing';
 
-const LABELS: Record<Category, string> = { free: 'Free', child: 'Child', adult: 'Adult', senior: 'Senior' };
+const LABELS: Record<Category, string> = {
+  free: 'Free',
+  child: 'Child',
+  adult: 'Adult',
+  senior: 'Senior',
+};
 
 export function App() {
   const [ages, setAges] = useState<number[]>([]);
@@ -45,21 +50,34 @@ export function App() {
             aria-describedby={error ? 'age-error' : undefined}
             onChange={(e) => setAgeText(e.target.value)}
           />
-          <button type="submit" className="primary" data-testid="add-visitor-button">Add visitor</button>
+          <button type="submit" className="primary" data-testid="add-visitor-button">
+            Add visitor
+          </button>
         </div>
-        {error && <p id="age-error" role="alert" className="error" data-testid="age-error">{error}</p>}
+        {error && (
+          <p id="age-error" role="alert" className="error" data-testid="age-error">
+            {error}
+          </p>
+        )}
       </form>
 
       {ages.length === 0 ? (
-        <p className="empty" data-testid="empty-order">Add visitors to see a price</p>
+        <p className="empty" data-testid="empty-order">
+          Add visitors to see a price
+        </p>
       ) : (
         <>
           <ul className="visitors">
             {order.lines.map((line, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: visitors have no id; the order is edited by index
               <li key={index} className="visitor" data-testid="visitor-row" data-age={line.age}>
                 <span className="visitor-age">Age {line.age}</span>
-                <span className={`badge badge-${line.category}`} data-testid="category-label">{LABELS[line.category]}</span>
-                <span className="price" data-testid="ticket-price">{formatEuro(line.cents)}</span>
+                <span className={`badge badge-${line.category}`} data-testid="category-label">
+                  {LABELS[line.category]}
+                </span>
+                <span className="price" data-testid="ticket-price">
+                  {formatEuro(line.cents)}
+                </span>
                 <button
                   type="button"
                   className="remove"
@@ -74,9 +92,13 @@ export function App() {
           </ul>
           <div className="summary">
             {order.groupDiscount && (
-              <p className="group-note" data-testid="group-discount-note">Group discount: 10% off every ticket</p>
+              <p className="group-note" data-testid="group-discount-note">
+                Group discount: 10% off every ticket
+              </p>
             )}
-            <p className="total" data-testid="order-total">Total: {formatEuro(order.totalCents)}</p>
+            <p className="total" data-testid="order-total">
+              Total: {formatEuro(order.totalCents)}
+            </p>
           </div>
         </>
       )}
