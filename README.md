@@ -4,10 +4,10 @@ How AI-assisted QA works in practice, from written requirements to
 AI-planned and AI-generated Playwright tests, planted bugs, healing and a
 requirements-to-tests traceability report, with a human reviewing every step.
 
-> **Status:** work in progress. Milestone 1 (app, requirements, Claude Code
-> setup) is done. Milestone 2 is under way: the requirements are refined, and
-> the test strategy, the Playwright agents and the seed test are in place. The
-> AI-written test plan comes next. See [Roadmap](#roadmap).
+> **Status:** work in progress. Milestones 1 and 2 (app, requirements, test
+> strategy, reviewed test plan) are done. Milestone 3 is under way: the prices
+> tests are generated and reviewed. The core path to the end is in the
+> [Roadmap](#roadmap); the rest is marked as later.
 
 ## What this repo is for
 
@@ -115,14 +115,21 @@ npm run e2e        # Playwright tests (starts the app itself)
 
 ## Roadmap
 
+The core path is what shows the whole workflow end to end. Everything marked
+"Later" is planned but not needed for that, and the traceability report names
+each such gap instead of hiding it.
+
 | Milestone | Content | Status |
 | --- | --- | --- |
 | 1 | App, requirements, Claude Code setup | Done |
-| 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | In progress |
-| 3 | AI-generated tests and their review | Planned |
-| 4 | Planted bugs, bug reports and the healer | Planned |
-| 5 | Traceability report and CI | Planned |
-| 6 | Final README with findings | Planned |
+| 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | Done |
+| 3 | AI-generated tests and their review. Core: the prices plan (done), the total plan, and the order scenarios for the 10-ticket limit and age validation (order 1.1 to 1.7) and for removing the 8th ticket (order 2.3) | In progress |
+| 4 | Core: switch on the three planted bugs and check that the right tests fail, and write one bug report | Planned |
+| 5 | Core: traceability report and CI (lint, unit tests with coverage, end-to-end tests) | Planned |
+| 6 | Core: final README with findings, taken from `docs/review-log.md` | Planned |
+| Later | The other order scenarios: message lifetime (order 1.8 to 1.14), line items and removal (order 2.1, 2.2 and 2.4). Until they exist, the traceability report names them as gaps, for example REQ-1.5 | Planned |
+| Later | Bug reports for the other two planted bugs | Planned |
+| Later | The healer demo: one heal for a renamed button next to one refused heal for a real bug, to show that the healer is limited to intended UI changes | Planned |
 | Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
 | Later | Mutation testing of `pricing.ts` with Stryker: change the rules on purpose and check that a test fails, the automatic version of the planted bugs. Code coverage of `pricing.ts` is already reported by `npm run coverage`; CI will run it in Milestone 5. | Idea |
 
