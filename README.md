@@ -124,11 +124,12 @@ each such gap instead of hiding it.
 | 1 | App, requirements, Claude Code setup | Done |
 | 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | Done |
 | 3 | AI-generated tests and their review. Core: the prices plan (done), the total plan, and the order scenarios for the 10-ticket limit and age validation (order 1.1 to 1.7) and for removing the 8th ticket (order 2.3) | In progress |
-| 4 | Core: switch on the three planted bugs and check that the right tests fail, write one bug report, and show one heal (a renamed button) next to one refused heal (a real bug) | Planned |
+| 4 | Core: switch on the three planted bugs and check that the right tests fail, and write one bug report | Planned |
 | 5 | Core: traceability report and CI (lint, unit tests with coverage, end-to-end tests) | Planned |
 | 6 | Core: final README with findings, taken from `docs/review-log.md` | Planned |
 | Later | The other order scenarios: message lifetime (order 1.8 to 1.14), line items and removal (order 2.1, 2.2 and 2.4). Until they exist, the traceability report names them as gaps, for example REQ-1.5 | Planned |
 | Later | Bug reports for the other two planted bugs | Planned |
+| Later | The healer demo: one heal for a renamed button next to one refused heal for a real bug, to show that the healer is limited to intended UI changes | Planned |
 | Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
 | Later | Mutation testing of `pricing.ts` with Stryker: change the rules on purpose and check that a test fails, the automatic version of the planted bugs. Code coverage of `pricing.ts` is already reported by `npm run coverage`; CI will run it in Milestone 5. | Idea |
 
