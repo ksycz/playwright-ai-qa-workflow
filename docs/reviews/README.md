@@ -12,6 +12,11 @@ history of `specs/`.
 | `m2-plan-review.md` | `review-test-plan` | `specs/` | 2 |
 | `m2-derive-test-data.md` | `derive-test-data` | `requirements/` | 2 |
 | `summary.md` | both (written by hand) | the two files above | 2 |
+| `m3-prices-test-review.md` | `review-generated-test` | `tests/generated/prices-*` | 3 |
+| `m3-total-order-test-review.md` | `review-generated-test` | `tests/generated/total-*`, `order-*` | 3 |
+| `m3-message-lifetime-test-review.md` | `review-generated-test` | `tests/generated/order-messages-*` | 3 |
+| `healer-rename.md` | healer agent (output, not a skill) | `tests/` after the button rename | healer demo |
+| `healer-planted-bug.md` | healer agent (output, not a skill) | `tests/` with `PLANTED_BUG=group-from-9` | healer demo |
 
 `summary.md` is a reading aid, not raw output, so it may be edited.
 

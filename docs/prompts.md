@@ -189,8 +189,8 @@ Two runs, to show what the healer may and may not fix. Stop any running
 `npm run dev` first, because Playwright reuses a running server.
 
 **1. An intended UI change.** The add button's label changed on purpose, from
-"Add visitor" to "Add to order" (no requirement names the label). Tests that
-find the button by its name break. In Claude Code, in the repo root:
+"Add visitor" to "Add to order". Tests that find the button by its name break.
+In Claude Code, in the repo root:
 
 ```
 Use the playwright-test-healer agent. The UI changed on purpose: the label of
@@ -198,6 +198,12 @@ the add button changed. Run the tests in tests/ and fix the tests that broke
 because of it. Change only locators. Do not change any title, step or expected
 value. Before each edit, state the cause of the failure.
 ```
+
+What happened in the run: the healer stopped and asked, because REQ-1.3 named
+the old label, so the rename was not yet an intended change. The rename was
+approved and REQ-1.3 updated first. Then the healer was told to keep
+`getByRole` and change only the name. A UI change that a requirement names
+starts with the requirement, not with the heal.
 
 **2. A real bug.** Start Claude Code with a planted bug switched on, so the
 test server the healer uses has it too: `PLANTED_BUG=group-from-9 claude`. Then:
