@@ -52,7 +52,7 @@ export function App() {
             onChange={(e) => setAgeText(e.target.value)}
           />
           <button type="submit" className="primary" data-testid="add-visitor-button">
-            Add visitor
+            Add to order
           </button>
         </div>
         {error && (
