@@ -4,10 +4,10 @@ How AI-assisted QA works in practice, from written requirements to
 AI-planned and AI-generated Playwright tests, planted bugs, healing and a
 requirements-to-tests traceability report, with a human reviewing every step.
 
-> **Status:** work in progress. Milestones 1 to 4 are done: requirements,
-> test strategy, reviewed test plan, 15 generated and reviewed tests, and three
-> planted bugs, each caught by at least one test. Next is Milestone 5: the
-> traceability report, CI and the findings. See the [Roadmap](#roadmap).
+> **Status:** the core path is done: requirements, test strategy, reviewed
+> test plan, 15 generated and reviewed tests, three planted bugs that the tests
+> catch, a traceability report and CI. What I learned is in
+> [Findings](#findings). Work for later is in the [Roadmap](#roadmap).
 
 ## What this repo is for
 
@@ -97,6 +97,7 @@ npm run lint       # Biome: format and lint (npm run format fixes)
 
 npx playwright install chromium   # once
 npm run e2e        # Playwright tests (starts the app itself)
+npm run trace      # traceability report: reports/traceability.md
 ```
 
 To switch on a planted bug, stop any running `npm run dev` first (Playwright
@@ -117,11 +118,41 @@ unit tests are not affected.
 | `app/` | The ticket price calculator (React, TypeScript, Vite) and its unit tests |
 | `tests/` | Playwright tests: `seed.spec.ts` by hand, `generated/` by the agent |
 | `specs/` | Test plans written by the planner agent |
+| `scripts/` | The traceability report script and its unit tests |
+| `.github/workflows/` | CI: lint, build, unit tests with coverage, end-to-end tests, traceability report |
 | `docs/` | Test strategy, conventions, review log, agent prompts, saved review outputs (`docs/reviews/`) and the skills index |
 | `CLAUDE.md` | Rules for Claude Code in this repo |
 | `.claude/` | The Playwright agents, QE skills and settings |
 | `.mcp.json` | The Playwright test server the agents use |
 | `playwright.config.ts`, `biome.json` | Test runner and format and lint settings |
+
+## Findings
+
+What the review log ([`docs/review-log.md`](docs/review-log.md)) shows after
+16 entries: 11 corrections to the AI-written plan and 5 to the generated tests
+and the AI review.
+
+- **The plan needed most of the work.** The planner covered every REQ id but
+  guessed rules the requirements did not state (3 times), wrote assertions too
+  weak to prove the requirement (3 times) and missed the boundary values that
+  matter, such as ages 5/6 and 64/65 in browser tests. Each guess became a
+  question for the PO and an edit to `requirements/`, not a test of the guess.
+- **Generated tests were mostly right.** With a reviewed plan and a seed test,
+  the generator wrote correct prices and totals every time. Its mistakes were
+  small and repeated: loose text locators, copied from the seed until the seed
+  was fixed, and a check that an element is visible where the requirement
+  defines its text.
+- **The AI review was useful but not proof.** The `review-generated-test` skill
+  found real problems, but one finding was wrong (it asked to weaken a check
+  that was already the stronger form) and it predicted two planted-bug catches
+  that did not happen. Only running the tests with `PLANTED_BUG` set showed
+  which tests catch which bug.
+- **Planted bugs prove the tests.** Every planted bug is caught by at least
+  one test. `group-from-9` is caught by the six tests that use exactly 8
+  tickets, and reported in [issue #25](https://github.com/ksycz/playwright-ai-qa-workflow/issues/25).
+- **Gaps are named, not hidden.** The traceability report (`npm run trace`,
+  also in each CI run's summary) lists REQ-1.5, message lifetime, as the one
+  requirement with no browser test. It is planned for later.
 
 ## Roadmap
 
@@ -135,12 +166,12 @@ each such gap instead of hiding it.
 | 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | Done |
 | 3 | AI-generated tests and their review. Prices: done. Core, as one generate-and-review batch: the total plan (total 1.1 and 2.1 to 2.4) and four order scenarios: the 10-ticket limit (order 1.1), which message wins at 10 tickets (order 1.3), age 121 (order 1.5) and removing the 8th ticket (order 2.3) | Done |
 | 4 | Core: switch on the three planted bugs and check that the right tests fail, and write one bug report. Each bug is caught: `child-free-6` by prices-categories-2-1, `senior-over-65` by prices-categories-2-2, `group-from-9` by the 6 tests with exactly 8 tickets ([bug report #25](https://github.com/ksycz/playwright-ai-qa-workflow/issues/25)) | Done |
-| 5 | Core: traceability report (a small script that maps every REQ id in `requirements/` to the test titles that carry it, or names it as a gap), CI (lint, unit tests with coverage, end-to-end tests, the report), and the final README with findings taken from `docs/review-log.md` | Planned |
+| 5 | Core: traceability report (`scripts/traceability.ts` maps every REQ id in `requirements/` to the test titles that carry it, or names it as a gap), CI (lint, build, unit tests with coverage, end-to-end tests, the report) and the [Findings](#findings) | Done |
 | Later | The other order scenarios: free tickets and the limit, empty age at 10 tickets, non-whole and empty ages (order 1.2, 1.4, 1.6, 1.7), message lifetime (order 1.8 to 1.14), line items and removal (order 2.1, 2.2 and 2.4). Until they exist, the traceability report names them as gaps, for example REQ-1.5 | Planned |
 | Later | Bug reports for the other two planted bugs | Planned |
 | Later | The healer demo: one heal for a renamed button next to one refused heal for a real bug, to show that the healer is limited to intended UI changes | Planned |
 | Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
-| Later | Mutation testing of `pricing.ts` with Stryker: change the rules on purpose and check that a test fails, the automatic version of the planted bugs. Code coverage of `pricing.ts` is already reported by `npm run coverage`; CI will run it in Milestone 5. | Idea |
+| Later | Mutation testing of `pricing.ts` with Stryker: change the rules on purpose and check that a test fails, the automatic version of the planted bugs. Code coverage of `pricing.ts` is already reported by `npm run coverage`, and CI runs it. | Idea |
 
 ## License
 
