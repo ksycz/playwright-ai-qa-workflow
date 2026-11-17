@@ -172,9 +172,10 @@ and the AI review.
 
 ## Roadmap
 
-The core path is what shows the whole workflow end to end. Everything marked
-"Later" is planned but not needed for that, and the traceability report names
-each such gap instead of hiding it.
+The core path and the healer demo show the whole workflow end to end.
+Everything marked "Later" is optional: every requirement already has at least
+one browser test, so these items add depth, not coverage. If one of them
+removes the last test for a requirement, the traceability report fails CI.
 
 | Milestone | Content | Status |
 | --- | --- | --- |
