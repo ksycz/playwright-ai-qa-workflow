@@ -100,6 +100,16 @@ npx playwright install chromium   # once
 npm run e2e        # Playwright tests (starts the app itself)
 ```
 
+To switch on a planted bug, stop any running `npm run dev` first (Playwright
+reuses a running server, which would not have the bug), then:
+
+```bash
+PLANTED_BUG=child-free-6 npm run e2e     # or senior-over-65, group-from-9
+```
+
+The bugs live in `app/src/planted-bugs.ts`. `pricing.ts` stays correct, so the
+unit tests are not affected.
+
 ## Repo layout
 
 | Path | What it holds |
