@@ -16,7 +16,9 @@ test.describe('Risk 2 - Input wrongly accepted or refused (REQ-1.3 limit, REQ-1.
     await page.getByRole('button', { name: 'Add visitor' }).click();
 
     // expect: age-error is shown.
-    await expect(page.getByTestId('age-error')).toHaveText('Age must be a whole number from 0 to 120');
+    await expect(page.getByTestId('age-error')).toHaveText(
+      'Age must be a whole number from 0 to 120',
+    );
 
     // 2. Click remove-visitor-button on the row.
     await page.getByTestId('remove-visitor-button').click();
