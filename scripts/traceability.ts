@@ -8,6 +8,11 @@ export type Requirement = { id: string; text: string };
 export type TestCase = { file: string; title: string; ids: string[] };
 export type Level = 'browser' | 'unit';
 
+// Requirements with no browser test on purpose, each planned in the README
+// roadmap. A gap not on this list fails the run, and so does an entry here that
+// a test now covers: closing a gap means removing it from the list in the same PR.
+export const KNOWN_GAPS = ['REQ-1.5'];
+
 const REQ_DEFINITION = /^- \*\*(REQ-\d+\.\d+)\*\* (.+)$/gm;
 // A title in single, double or back quotes, with escaped quotes inside.
 const TEST_TITLE = /\b(?:test|it)\(\s*(['"`])((?:\\.|(?!\1)[^\\])*)\1/g;
@@ -40,7 +45,14 @@ function byId(a: string, b: string): number {
 export function buildReport(
   requirements: Requirement[],
   tests: Record<Level, TestCase[]>,
-): { markdown: string; gaps: string[]; unknownIds: string[] } {
+  knownGaps: string[] = KNOWN_GAPS,
+): {
+  markdown: string;
+  gaps: string[];
+  newGaps: string[];
+  closedKnownGaps: string[];
+  unknownIds: string[];
+} {
   const known = new Set(requirements.map((r) => r.id));
   const all = [...tests.browser, ...tests.unit];
   const unknownIds = [...new Set(all.flatMap((t) => t.ids).filter((id) => !known.has(id)))].sort(
@@ -58,6 +70,9 @@ export function buildReport(
       return { req, browser, unit, status, files };
     });
   const gaps = rows.filter((r) => r.browser.length === 0).map((r) => r.req.id);
+  const newGaps = gaps.filter((id) => !knownGaps.includes(id));
+  const closedKnownGaps = knownGaps.filter((id) => !gaps.includes(id));
+  const accepted = gaps.filter((id) => knownGaps.includes(id));
 
   const lines = [
     '# Traceability report',
@@ -72,16 +87,28 @@ export function buildReport(
         `| **${r.req.id}** ${r.req.text} | ${r.browser.length} | ${r.unit.length} | ${r.status} | ${r.files || '-'} |`,
     ),
   ];
-  if (gaps.length > 0) {
+  if (accepted.length > 0) {
     lines.push(
       '',
-      `**Gaps (no browser test):** ${gaps.join(', ')}. The roadmap in the README says which are planned for later.`,
+      `**Known gaps (no browser test, planned in the README roadmap):** ${accepted.join(', ')}.`,
+    );
+  }
+  if (newGaps.length > 0) {
+    lines.push(
+      '',
+      `**New gaps:** ${newGaps.join(', ')}. Add a test, or add the id to KNOWN_GAPS in scripts/traceability.ts with a plan in the roadmap.`,
+    );
+  }
+  if (closedKnownGaps.length > 0) {
+    lines.push(
+      '',
+      `**Known gaps that are now covered:** ${closedKnownGaps.join(', ')}. Remove them from KNOWN_GAPS in scripts/traceability.ts.`,
     );
   }
   if (unknownIds.length > 0) {
     lines.push('', `**Unknown ids in test titles:** ${unknownIds.join(', ')}. Fix the title.`);
   }
-  return { markdown: `${lines.join('\n')}\n`, gaps, unknownIds };
+  return { markdown: `${lines.join('\n')}\n`, gaps, newGaps, closedKnownGaps, unknownIds };
 }
 
 function filesIn(dir: string, suffix: string): string[] {
@@ -113,9 +140,11 @@ function main(): void {
   }
   console.log(report.markdown);
 
-  // Gaps are expected and named in the report. A title with an id that no
-  // requirement defines is a mistake, so it fails the run.
-  if (report.unknownIds.length > 0) process.exitCode = 1;
+  // Known gaps are accepted and named in the report. A new gap, a known gap
+  // that is now covered, or a title with an id no requirement defines fails.
+  const failed =
+    report.newGaps.length + report.closedKnownGaps.length + report.unknownIds.length > 0;
+  if (failed) process.exitCode = 1;
 }
 
 if (process.argv[1]?.endsWith('traceability.ts')) main();

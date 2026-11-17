@@ -39,11 +39,25 @@ test("[REQ-3.4] 'Free' only as a label", async () => {});
         browser: [{ file: 'tests/x.spec.ts', title: '', ids: ['REQ-1.1', 'REQ-9.9'] }],
         unit: [{ file: 'app/src/y.test.ts', title: '', ids: ['REQ-1.2'] }],
       },
+      ['REQ-1.10'],
     );
     expect(report.gaps).toEqual(['REQ-1.2', 'REQ-1.10']);
+    expect(report.newGaps).toEqual(['REQ-1.2']);
+    expect(report.closedKnownGaps).toEqual([]);
     expect(report.unknownIds).toEqual(['REQ-9.9']);
     expect(report.markdown).toContain('| **REQ-1.1** a. | 1 | 0 | covered | x.spec.ts |');
     expect(report.markdown).toContain('| **REQ-1.2** b. | 0 | 1 | unit only | - |');
     expect(report.markdown).toContain('| **REQ-1.10** c. | 0 | 0 | **GAP** | - |');
+  });
+
+  it('names a known gap that a test now covers', () => {
+    const report = buildReport(
+      [{ id: 'REQ-1.5', text: 'a.' }],
+      { browser: [{ file: 'tests/x.spec.ts', title: '', ids: ['REQ-1.5'] }], unit: [] },
+      ['REQ-1.5'],
+    );
+    expect(report.gaps).toEqual([]);
+    expect(report.closedKnownGaps).toEqual(['REQ-1.5']);
+    expect(report.markdown).toContain('Remove them from KNOWN_GAPS');
   });
 });
