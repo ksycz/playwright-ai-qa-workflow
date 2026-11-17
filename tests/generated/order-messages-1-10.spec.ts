@@ -11,7 +11,7 @@ test.describe('Risk 2 - Input wrongly accepted or refused (REQ-1.3 limit, REQ-1.
 
     // 1. Open the page, enter 'abc', click add-visitor-button.
     await page.getByTestId('age-input').fill('abc');
-    await page.getByRole('button', { name: 'Add visitor' }).click();
+    await page.getByRole('button', { name: 'Add to order' }).click();
 
     // expect: age-error is shown with the invalid-age message.
     await expect(page.getByTestId('age-error')).toHaveText(

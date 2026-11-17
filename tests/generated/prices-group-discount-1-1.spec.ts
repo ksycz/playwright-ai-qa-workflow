@@ -12,7 +12,7 @@ test.describe('Risk 1 - Wrong price or total: group discount thresholds (boundar
     // 1. Open the page and add seven visitors of age 30.
     for (let i = 0; i < 7; i++) {
       await page.getByTestId('age-input').fill('30');
-      await page.getByRole('button', { name: 'Add visitor' }).click();
+      await page.getByRole('button', { name: 'Add to order' }).click();
     }
     const prices = page.getByTestId('visitor-row').getByTestId('ticket-price');
 
@@ -31,7 +31,7 @@ test.describe('Risk 1 - Wrong price or total: group discount thresholds (boundar
 
     // 2. Add an 8th visitor of age 30.
     await page.getByTestId('age-input').fill('30');
-    await page.getByRole('button', { name: 'Add visitor' }).click();
+    await page.getByRole('button', { name: 'Add to order' }).click();
 
     // expect: All eight ticket-price values are €17.01 (18.90 less 10%).
     await expect(prices).toHaveText([

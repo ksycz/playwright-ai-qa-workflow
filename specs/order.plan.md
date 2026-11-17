@@ -28,7 +28,7 @@ Seed file: tests/seed.spec.ts.
   2. Enter age 30 and click add-visitor-button an 11th time.
     - expect: age-error shows exactly 'An order can have at most 10 tickets'.
     - expect: Still exactly ten visitor-row items and the total is unchanged.
-    - expect: age-input and the 'Add visitor' button are both enabled.
+    - expect: age-input and the 'Add to order' button are both enabled.
 
 #### 1.2. [REQ-1.3] risk 2: free tickets count toward the 10-ticket limit
 

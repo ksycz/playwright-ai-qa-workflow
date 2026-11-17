@@ -12,10 +12,10 @@ test.describe('Risk 2 - Input wrongly accepted or refused (REQ-1.3 limit, REQ-1.
     // 1. Open the page, add ten visitors of age 30, then try an 11th so the limit message shows.
     for (let i = 0; i < 10; i++) {
       await page.getByTestId('age-input').fill('30');
-      await page.getByRole('button', { name: 'Add visitor' }).click();
+      await page.getByRole('button', { name: 'Add to order' }).click();
     }
     await page.getByTestId('age-input').fill('30');
-    await page.getByRole('button', { name: 'Add visitor' }).click();
+    await page.getByRole('button', { name: 'Add to order' }).click();
     // expect: age-error shows the limit message. Without this check, step 2 could not tell "stayed" from "appeared later".
     await expect(page.getByTestId('age-error')).toHaveText('An order can have at most 10 tickets');
 

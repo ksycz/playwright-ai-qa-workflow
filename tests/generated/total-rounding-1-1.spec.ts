@@ -11,7 +11,7 @@ test.describe('Risk 1 - Wrong price or total: rounding, format and sum (REQ-3.1)
     await page.goto('/');
     for (const age of ['12', '12', '30', '30', '30', '30', '30', '30']) {
       await page.getByTestId('age-input').fill(age);
-      await page.getByRole('button', { name: 'Add visitor' }).click();
+      await page.getByRole('button', { name: 'Add to order' }).click();
     }
 
     const childRows = page
