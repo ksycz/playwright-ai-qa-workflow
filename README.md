@@ -6,7 +6,7 @@ requirements-to-tests traceability report, with a human reviewing every step.
 
 > **Status:** the core path is done: requirements, test strategy, reviewed
 > test plan, 20 generated and reviewed tests, three planted bugs that the tests
-> catch, a traceability report with no gaps, and CI. What I learned is in
+> catch, a healer demo, a traceability report with no gaps, and CI. What I learned is in
 > [Findings](#findings). Work for later is in the [Roadmap](#roadmap).
 
 ## What this repo is for
@@ -152,6 +152,16 @@ and the AI review.
   that was already the stronger form) and it predicted two planted-bug catches
   that did not happen. Only running the tests with `PLANTED_BUG` set showed
   which tests catch which bug.
+- **The healer stayed inside its limits, with help.** After the add button was
+  renamed, it stopped because REQ-1.3 named the old label and asked how to
+  proceed. Once the PO approved the rename in the requirement, it changed only
+  the button name in 19 files and flagged the stale plan wording itself
+  ([output](docs/reviews/healer-rename.md)). With `group-from-9` switched on
+  and a prompt that just said "fix what fails", it changed nothing and named
+  the 6 failures as an app defect against REQ-2.5
+  ([output](docs/reviews/healer-planted-bug.md)). One caveat: it also found
+  `app/src/planted-bugs.ts`, and CLAUDE.md tells it about planted bugs. A real
+  bug comes with no such hint, so every heal still gets a human review.
 - **Planted bugs prove the tests.** Every planted bug is caught by at least
   one test. `group-from-9` is caught by the six tests that use exactly 8
   tickets, and reported in [issue #25](https://github.com/ksycz/playwright-ai-qa-workflow/issues/25).
@@ -173,10 +183,10 @@ each such gap instead of hiding it.
 | 3 | AI-generated tests and their review. Prices: done. Core, as one generate-and-review batch: the total plan (total 1.1 and 2.1 to 2.4) and four order scenarios: the 10-ticket limit (order 1.1), which message wins at 10 tickets (order 1.3), age 121 (order 1.5) and removing the 8th ticket (order 2.3). Then message lifetime, REQ-1.5 (order 1.8, 1.9, 1.10, 1.13, 1.14), to close the last gap | Done |
 | 4 | Core: switch on the three planted bugs and check that the right tests fail, and write one bug report. Each bug is caught: `child-free-6` by prices-categories-2-1, `senior-over-65` by prices-categories-2-2, `group-from-9` by the 6 tests with exactly 8 tickets ([bug report #25](https://github.com/ksycz/playwright-ai-qa-workflow/issues/25)) | Done |
 | 5 | Core: traceability report (`scripts/traceability.ts` maps every REQ id in `requirements/` to the test titles that carry it, or names it as a gap), CI (lint, build, unit tests with coverage, end-to-end tests, the report) and the [Findings](#findings) | Done |
+| Healer demo | One heal for an intended rename of the add button (after REQ-1.3 was updated) next to one refused heal under the planted bug `group-from-9`. Outputs in `docs/reviews/healer-*.md` | Done |
 | Later | The other order scenarios: free tickets and the limit, empty age at 10 tickets, non-whole and empty ages (order 1.2, 1.4, 1.6, 1.7), adding again after a removal and a refused age that leaves the order unchanged (order 1.11, 1.12), line items and removal (order 2.1, 2.2 and 2.4). Their REQ ids are already covered by other tests | Planned |
 | Later | A planted bug for message lifetime (for example, the message clears on typing), so the REQ-1.5 tests are seen to fail at least once | Idea |
 | Later | Bug reports for the other two planted bugs | Planned |
-| Later | The healer demo: one heal for a renamed button next to one refused heal for a real bug, to show that the healer is limited to intended UI changes | Planned |
 | Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
 | Later | Mutation testing of `pricing.ts` with Stryker: change the rules on purpose and check that a test fails, the automatic version of the planted bugs. Code coverage of `pricing.ts` is already reported by `npm run coverage`, and CI runs it. | Idea |
 
