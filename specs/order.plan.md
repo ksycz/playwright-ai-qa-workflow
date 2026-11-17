@@ -119,10 +119,11 @@ Seed file: tests/seed.spec.ts.
 **Steps:**
   1. Open the page, enter 'abc', click add-visitor-button.
     - expect: age-error is shown with the invalid-age message.
+    - expect: age-input still holds 'abc' (REQ-1.2: the text is kept after a refusal).
   2. Clear age-input (fill it with an empty string) without clicking add-visitor-button.
-    - expect: age-error is still shown with the same message.
+    - expect: age-input is empty, and age-error is still shown with the same message.
   3. Type '3' in age-input without clicking add-visitor-button.
-    - expect: age-error is still shown with the same message.
+    - expect: age-input holds '3', and age-error is still shown with the same message.
 
 #### 1.11. [REQ-1.3][REQ-1.4] risk 2: after removing one of 10 tickets a new visitor can be added again
 
@@ -151,7 +152,7 @@ Seed file: tests/seed.spec.ts.
 
 **Steps:**
   1. Open the page. Add age 30, then enter 'abc' and click add-visitor-button.
-    - expect: age-error is shown.
+    - expect: age-error shows 'Age must be a whole number from 0 to 120'.
   2. Click remove-visitor-button on the row.
     - expect: age-error is no longer shown and empty-order is shown.
 
@@ -161,6 +162,7 @@ Seed file: tests/seed.spec.ts.
 
 **Steps:**
   1. Open the page, add ten visitors of age 30, then try an 11th so the limit message shows.
+    - expect: age-error shows 'An order can have at most 10 tickets'.
   2. Type '3' in age-input without clicking the button.
     - expect: age-error still shows 'An order can have at most 10 tickets'.
 

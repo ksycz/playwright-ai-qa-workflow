@@ -16,7 +16,7 @@ test.describe('Risk 2 - Input wrongly accepted or refused (REQ-1.3 limit, REQ-1.
     }
     await page.getByTestId('age-input').fill('30');
     await page.getByRole('button', { name: 'Add visitor' }).click();
-    // expect: age-error shows the limit message (precondition added by the generator, the plan lists no expect here).
+    // expect: age-error shows the limit message. Without this check, step 2 could not tell "stayed" from "appeared later".
     await expect(page.getByTestId('age-error')).toHaveText('An order can have at most 10 tickets');
 
     // 2. Type '3' in age-input without clicking the button.

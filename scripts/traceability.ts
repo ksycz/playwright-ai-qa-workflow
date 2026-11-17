@@ -11,7 +11,7 @@ export type Level = 'browser' | 'unit';
 // Requirements with no browser test on purpose, each planned in the README
 // roadmap. A gap not on this list fails the run, and so does an entry here that
 // a test now covers: closing a gap means removing it from the list in the same PR.
-export const KNOWN_GAPS = ['REQ-1.5'];
+export const KNOWN_GAPS: string[] = [];
 
 const REQ_DEFINITION = /^- \*\*(REQ-\d+\.\d+)\*\* (.+)$/gm;
 // A title in single, double or back quotes, with escaped quotes inside.

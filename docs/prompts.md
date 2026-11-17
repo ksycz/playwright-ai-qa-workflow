@@ -107,6 +107,29 @@ the plan, do not adjust the test: stop and tell me which scenario and which
 value. If a step is unclear, ask instead of guessing.
 ```
 
+Third batch, message lifetime (REQ-1.5):
+
+```
+Use the playwright-test-generator agent on scenarios 1.8, 1.9, 1.10, 1.13 and 1.14 in
+specs/order.plan.md, and on no other scenario. Generate one test for each
+scenario, one test per file, written to tests/generated/. Name each file after
+the plan's File line plus the scenario number, for example
+order-messages-1-8.spec.ts. Copy the scenario title as the test title, so it
+starts with its REQ ids. Follow docs/conventions.md and copy the style of
+tests/seed.spec.ts. Assert the expected values written in the plan, never what
+the screen happens to show. If the app disagrees with the plan, do not adjust
+the test: stop and tell me which scenario and which value. If a step is
+unclear, ask instead of guessing.
+```
+
+**What the agent was told beyond these prompts.** In batches 2 and 3, Claude
+Code briefed the generator with extra choices of its own, taken from earlier
+reviews. Batch 2: match "Free" exactly, and in total 2.1 check the message
+before the count-0 checks. Batch 3: "no longer shown" as removed from the page
+(count 0), the exact message in order 1.13, a precondition check in 1.14, real
+keystrokes for "type", and the exact empty-order text. Some of those choices
+were corrected in review (see `docs/review-log.md`).
+
 Why each part is there:
 
 - **Small batches:** each batch stays small enough to review like a pull
@@ -151,7 +174,9 @@ Save the output unedited, as for the plan review (header and naming in
 Write that output, unedited, to docs/reviews/m3-prices-test-review.md.
 ```
 
-For the second batch, the file is `docs/reviews/m3-total-order-test-review.md`.
+For the second batch, the file is `docs/reviews/m3-total-order-test-review.md`;
+for the third, `docs/reviews/m3-message-lifetime-test-review.md`, run on
+`tests/generated/order-messages-*.spec.ts`.
 
 Then run the batch with `npx playwright test tests/generated/prices-*` and
 repeat it a few times to look for flaky tests (`--repeat-each=5`, retries stay
