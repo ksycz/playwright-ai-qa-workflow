@@ -76,10 +76,9 @@ Each real finding becomes an entry in `docs/review-log.md`.
 
 ## Generator (Milestone 3)
 
-Start the app first (`npm run dev`). Generate one plan file at a time, in the
-run order from `specs/README.md` (prices, then total, then order), and review
-and commit each batch before starting the next. In Claude Code, in the repo
-root:
+Start the app first (`npm run dev`). Prices ran as the first batch on its own;
+total and the core order scenarios run together as the second batch. Review and
+commit each batch before starting the next. In Claude Code, in the repo root:
 
 ```
 Use the playwright-test-generator agent on specs/prices.plan.md. Generate one
@@ -93,13 +92,27 @@ the test: stop and tell me which scenario and which value. If a step is
 unclear, ask instead of guessing.
 ```
 
-For `specs/total.plan.md` and `specs/order.plan.md`, change only the plan file.
+Second batch, same rules, two plan files:
+
+```
+Use the playwright-test-generator agent on all scenarios in
+specs/total.plan.md and on scenarios 1.1, 1.3, 1.5 and 2.3 in
+specs/order.plan.md, and on no other order scenario. Generate one test for
+each scenario, one test per file, written to tests/generated/. Name each file
+after the plan's File line plus the scenario number. Copy the scenario title
+as the test title, so it starts with its REQ id. Follow docs/conventions.md
+and copy the style of tests/seed.spec.ts. Assert the expected values written
+in the plan, never what the screen happens to show. If the app disagrees with
+the plan, do not adjust the test: stop and tell me which scenario and which
+value. If a step is unclear, ask instead of guessing.
+```
 
 Why each part is there:
 
-- **One plan file at a time:** the batch stays small enough to review like a
-  pull request, and a mistake in the first batch is fixed before it is copied
-  into the next.
+- **Small batches:** each batch stays small enough to review like a pull
+  request, and a mistake in the first batch is fixed before it is copied into
+  the next. Prices went first on its own; total and the four core order
+  scenarios (9 tests) fit in one review.
 - **One test per file, named from the plan:** the generator agent writes one
   test per file. The plan's File lines group several scenarios under one name,
   so the scenario number is added to keep the files apart. Traceability uses the
@@ -112,10 +125,10 @@ Why each part is there:
 - **Stop on disagreement:** if the app and the plan differ, the app might have a
   bug. The generator must not fix the test to match it.
 
-Two scenarios need extra care. In `order.plan.md`, 2.2 reads the total once
-right after the click and checks a marker on `window` (the plan overview names
-this exception). In `total.plan.md` 2.1 and `order.plan.md` 2.4, the total must
-not be in the page, so the test checks a count of 0.
+One scenario in the second batch needs extra care: in `total.plan.md` 2.1 the
+total must not be in the page, so the test checks a count of 0. (Later, the
+same goes for `order.plan.md` 2.4, and `order.plan.md` 2.2 reads the total
+once right after the click and checks a marker on `window`.)
 
 ## Generated test review (Milestone 3)
 
@@ -125,12 +138,20 @@ After each batch, before committing it, in Claude Code, in the repo root:
 Use the review-generated-test skill on tests/generated/prices-*.spec.ts.
 ```
 
+Second batch:
+
+```
+Use the review-generated-test skill on tests/generated/total-*.spec.ts and tests/generated/order-*.spec.ts.
+```
+
 Save the output unedited, as for the plan review (header and naming in
 [`reviews/README.md`](reviews/README.md)):
 
 ```
 Write that output, unedited, to docs/reviews/m3-prices-test-review.md.
 ```
+
+For the second batch, the file is `docs/reviews/m3-total-order-test-review.md`.
 
 Then run the batch with `npx playwright test tests/generated/prices-*` and
 repeat it a few times to look for flaky tests (`--repeat-each=5`, retries stay

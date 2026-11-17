@@ -6,7 +6,8 @@ requirements-to-tests traceability report, with a human reviewing every step.
 
 > **Status:** work in progress. Milestones 1 and 2 (app, requirements, test
 > strategy, reviewed test plan) are done. Milestone 3 is under way: the prices
-> tests are generated and reviewed. The core path to the end is in the
+> tests are generated and reviewed; the total tests and the core order tests
+> come next, as one batch. The core path to the end is in the
 > [Roadmap](#roadmap); the rest is marked as later.
 
 ## What this repo is for
@@ -123,11 +124,10 @@ each such gap instead of hiding it.
 | --- | --- | --- |
 | 1 | App, requirements, Claude Code setup | Done |
 | 2 | Refinement on the tickets, test strategy, seed test, AI-written test plan and its review | Done |
-| 3 | AI-generated tests and their review. Core: the prices plan (done), the total plan, and the order scenarios for the 10-ticket limit and age validation (order 1.1 to 1.7) and for removing the 8th ticket (order 2.3) | In progress |
+| 3 | AI-generated tests and their review. Prices: done. Core, as one generate-and-review batch: the total plan (total 1.1 and 2.1 to 2.4) and four order scenarios: the 10-ticket limit (order 1.1), which message wins at 10 tickets (order 1.3), age 121 (order 1.5) and removing the 8th ticket (order 2.3) | In progress |
 | 4 | Core: switch on the three planted bugs and check that the right tests fail, and write one bug report | Planned |
-| 5 | Core: traceability report and CI (lint, unit tests with coverage, end-to-end tests) | Planned |
-| 6 | Core: final README with findings, taken from `docs/review-log.md` | Planned |
-| Later | The other order scenarios: message lifetime (order 1.8 to 1.14), line items and removal (order 2.1, 2.2 and 2.4). Until they exist, the traceability report names them as gaps, for example REQ-1.5 | Planned |
+| 5 | Core: traceability report (a small script that maps every REQ id in `requirements/` to the test titles that carry it, or names it as a gap), CI (lint, unit tests with coverage, end-to-end tests, the report), and the final README with findings taken from `docs/review-log.md` | Planned |
+| Later | The other order scenarios: free tickets and the limit, empty age at 10 tickets, non-whole and empty ages (order 1.2, 1.4, 1.6, 1.7), message lifetime (order 1.8 to 1.14), line items and removal (order 2.1, 2.2 and 2.4). Until they exist, the traceability report names them as gaps, for example REQ-1.5 | Planned |
 | Later | Bug reports for the other two planted bugs | Planned |
 | Later | The healer demo: one heal for a renamed button next to one refused heal for a real bug, to show that the healer is limited to intended UI changes | Planned |
 | Later | Visual tests: a requirement for how the order screen looks, a few screenshot checks, and a planted layout bug. Baselines are made in CI only, and updating one is logged as a heal. | Idea |
