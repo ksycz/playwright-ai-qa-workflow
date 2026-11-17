@@ -146,3 +146,27 @@ Newest entry last. Log a correction in the same commit as the change.
 - **Correction:** I ran the tests with `PLANTED_BUG=group-from-9`. Both tests pass: they use 10 tickets, and the bug still discounts 10 tickets, because only 8 tickets lose the discount. The 6 tests that use exactly 8 tickets fail, as predicted. The tests are unchanged; the bug report is issue #25.
 - **Why:** A prediction made by reading is not proof. Only the run with the bug switched on shows which tests catch it.
 - **Kind:** other
+
+### 2026-11-17: "disappears" checked as removed from the page
+
+- **Stage:** generated test
+- **AI output:** `order-messages-1-8`, `-1-9` and `-1-13` checked that the refusal message is gone with `toHaveCount(0)`, meaning removed from the page. Claude Code asked the generator for this form.
+- **Correction:** They now use `toBeHidden()`, which passes when the message is removed or hidden.
+- **Why:** REQ-1.5 says the message "disappears", not that it is removed. Requiring removal tests a rule the requirement does not state. It matches the group discount notice, checked the same way. Review finding 4 in `docs/reviews/m3-message-lifetime-test-review.md`.
+- **Kind:** guessed rule
+
+### 2026-11-17: "stays while typing or clearing" did not check the field
+
+- **Stage:** generated test
+- **AI output:** `order-messages-1-10` cleared and typed in the field, then checked that the message stays, but never checked the field itself.
+- **Correction:** The test now checks that the field still holds "abc" after the refusal, is empty after clearing and holds "3" after typing. The plan says the same for 1.10.
+- **Why:** REQ-1.2 (the text is kept after a refusal, answered on issue #2) and REQ-1.5. Without the first check, the clearing step could clear an empty field and still pass. Without the others, the "still shown" check could pass before the input was handled. Review findings 1 and 2.
+- **Kind:** missing case
+
+### 2026-11-17: checks added beyond the plan, now in the plan
+
+- **AI output:** `order-messages-1-13` checks the exact invalid-age message where the plan said only "shown", and `-1-14` checks the limit message before typing where the plan had no check. Claude Code asked the generator for both, and the comment in 1-14 said the generator added it.
+- **Stage:** generated test
+- **Correction:** Both checks are kept and now written in the plan for 1.13 and 1.14. The comment in 1-14 now gives the reason instead of a wrong source. The extra instructions given to the generator are listed in `docs/prompts.md`.
+- **Why:** The plan must say what the tests check, and the record must say who asked for what. Review finding 3.
+- **Kind:** other
