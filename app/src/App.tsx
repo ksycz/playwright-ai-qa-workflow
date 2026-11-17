@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from 'react';
-import { addVisitor, type Category, formatEuro, parseAge, quote } from './pricing';
+import { shownQuote } from './planted-bugs';
+import { addVisitor, type Category, formatEuro, parseAge } from './pricing';
 
 const LABELS: Record<Category, string> = {
   free: 'Free',
@@ -12,7 +13,7 @@ export function App() {
   const [ages, setAges] = useState<number[]>([]);
   const [ageText, setAgeText] = useState('');
   const [error, setError] = useState('');
-  const order = quote(ages);
+  const order = shownQuote(ages);
 
   function onAdd(event: FormEvent) {
     event.preventDefault();

@@ -138,3 +138,11 @@ Newest entry last. Log a correction in the same commit as the change.
 - **Why:** REQ-3.4, "Free" appears only as the category label. A false alarm from the review skill.
 - **Kind:** other
 
+
+### 2026-11-17: review predicted two catches that did not happen
+
+- **Stage:** generated test
+- **AI output:** The review in `docs/reviews/m3-total-order-test-review.md` predicted that `order-limit-1-1` and `order-limit-1-3` catch `group-from-9` ("€189.00 instead of €170.10").
+- **Correction:** I ran the tests with `PLANTED_BUG=group-from-9`. Both tests pass: they use 10 tickets, and the bug still discounts 10 tickets, because only 8 tickets lose the discount. The 6 tests that use exactly 8 tickets fail, as predicted. The tests are unchanged; the bug report is issue #25.
+- **Why:** A prediction made by reading is not proof. Only the run with the bug switched on shows which tests catch it.
+- **Kind:** other
