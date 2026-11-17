@@ -11,10 +11,10 @@ test.describe('Risk 1 - Wrong price or total: group discount thresholds (boundar
 
     // 1. Open the page. Add one visitor of age 12 and seven visitors of age 30.
     await page.getByTestId('age-input').fill('12');
-    await page.getByRole('button', { name: 'Add visitor' }).click();
+    await page.getByRole('button', { name: 'Add to order' }).click();
     for (let i = 0; i < 7; i++) {
       await page.getByTestId('age-input').fill('30');
-      await page.getByRole('button', { name: 'Add visitor' }).click();
+      await page.getByRole('button', { name: 'Add to order' }).click();
     }
 
     const childRow = page

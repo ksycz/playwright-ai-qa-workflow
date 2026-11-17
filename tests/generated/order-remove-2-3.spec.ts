@@ -12,7 +12,7 @@ test.describe('Risk 3 - Screen out of step with the order (REQ-1.1 add, REQ-1.4 
     // 1. Open the page and add eight visitors of age 30.
     for (let i = 0; i < 8; i++) {
       await page.getByTestId('age-input').fill('30');
-      await page.getByRole('button', { name: 'Add visitor' }).click();
+      await page.getByRole('button', { name: 'Add to order' }).click();
     }
     const prices = page.getByTestId('visitor-row').getByTestId('ticket-price');
 

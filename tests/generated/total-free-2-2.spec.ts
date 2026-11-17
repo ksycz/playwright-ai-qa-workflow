@@ -11,7 +11,7 @@ test.describe('Risk 3 - Screen out of step with the order (REQ-3.2, REQ-3.3, REQ
     await page.goto('/');
     for (const age of ['0', '5']) {
       await page.getByTestId('age-input').fill(age);
-      await page.getByRole('button', { name: 'Add visitor' }).click();
+      await page.getByRole('button', { name: 'Add to order' }).click();
     }
 
     // expect: Two visitor-row items, each with ticket-price €0.00 and category-label Free.

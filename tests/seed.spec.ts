@@ -11,7 +11,7 @@ import { expect, test } from '@playwright/test';
 test('[REQ-1.1][REQ-2.1][REQ-3.1] an adult is added and priced at €18.90', async ({ page }) => {
   await page.goto('/');
   await page.getByTestId('age-input').fill('30');
-  await page.getByRole('button', { name: 'Add visitor' }).click();
+  await page.getByRole('button', { name: 'Add to order' }).click();
 
   const row = page
     .getByTestId('visitor-row')

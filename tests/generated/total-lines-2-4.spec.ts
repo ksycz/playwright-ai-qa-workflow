@@ -9,7 +9,7 @@ test.describe('Risk 3 - Screen out of step with the order (REQ-3.2, REQ-3.3, REQ
     await page.goto('/');
     for (let i = 0; i < 2; i++) {
       await page.getByTestId('age-input').fill('30');
-      await page.getByRole('button', { name: 'Add visitor' }).click();
+      await page.getByRole('button', { name: 'Add to order' }).click();
     }
 
     // expect: Exactly two visitor-row items, each with category-label Adult and ticket-price €18.90.

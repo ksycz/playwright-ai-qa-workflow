@@ -9,9 +9,9 @@ test.describe('Risk 1 - Wrong price: the age edges 5/6 and 64/65 (fewer than 8 t
 
     // 1. Open the page. Add age 5, then age 6.
     await page.getByTestId('age-input').fill('5');
-    await page.getByRole('button', { name: 'Add visitor' }).click();
+    await page.getByRole('button', { name: 'Add to order' }).click();
     await page.getByTestId('age-input').fill('6');
-    await page.getByRole('button', { name: 'Add visitor' }).click();
+    await page.getByRole('button', { name: 'Add to order' }).click();
 
     const freeRow = page
       .getByTestId('visitor-row')
