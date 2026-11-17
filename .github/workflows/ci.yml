@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint and format
+        run: npm run lint
+
+      - name: Type check and build
+        run: npm run build
+
+      - name: Unit tests with coverage of pricing.ts
+        run: npm run coverage
+
+      - name: Install the Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run e2e
+
+      # Runs even when a test fails, so the report is always in the job summary.
+      - name: Traceability report
+        if: ${{ !cancelled() }}
+        run: npm run trace
+
+      - name: Upload the Playwright report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
