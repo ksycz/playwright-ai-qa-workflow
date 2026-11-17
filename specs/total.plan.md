@@ -71,11 +71,11 @@ Seed file: tests/seed.spec.ts.
 
 No scenario is written for these; the requirement is silent or vague. App behaviour is given as information only.
 
-1. REQ-3.1: Must the total line carry the 'Total: ' prefix? REQ-3.4 shows 'Total: €0.00'; REQ-3.1 only specifies the amount format. The plan asserts the REQ-3.4 form for every total. Please confirm it applies to all totals.
+1. REQ-3.1: Must the total line carry the 'Total: ' prefix? REQ-3.4 shows 'Total: €0.00'; REQ-3.1 only specifies the amount format. The plan asserts the REQ-3.4 form for every total. Please confirm it applies to all totals. Answered in PR #21: REQ-3.1 now says every total is shown as 'Total: ' followed by the amount.
 2. REQ-3.2: absent or hidden. Answered on issue #4: absent, not in the page.
 3. REQ-3.3: In what order must the line items appear? Observed: order added, with new visitors at the end. Not asserted.
 4. REQ-3.4: 'Free' only as category label. Answered on issue #4: confirmed, the remove button name has no category.
-5. REQ-2.5 and REQ-3.1: Should the group discount note be shown (see question 1 in the prices plan)? It is not asserted here.
+5. REQ-2.5 and REQ-3.1: Should the group discount note be shown (see question 1 in the prices plan)? Answered in PR #21: REQ-2.5 now defines the notice. It is asserted in order 2.3 (shown at 8 tickets, not shown at 7).
 6. Display and accessibility (risk 4): no requirement supports a check; none planned.
 
 **Seed:** `tests/seed.spec.ts`
