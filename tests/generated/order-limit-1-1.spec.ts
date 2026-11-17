@@ -31,7 +31,7 @@ test.describe('Risk 2 - Input wrongly accepted or refused (REQ-1.3 limit, REQ-1.
     // expect: Still exactly ten visitor-row items and the total is unchanged.
     await expect(page.getByTestId('visitor-row')).toHaveCount(10);
     await expect(page.getByTestId('order-total')).toHaveText('Total: €170.10');
-    // expect: age-input and the 'Add visitor' button are both enabled.
+    // expect: age-input and the 'Add to order' button are both enabled.
     await expect(page.getByTestId('age-input')).toBeEnabled();
     await expect(page.getByRole('button', { name: 'Add to order' })).toBeEnabled();
   });
