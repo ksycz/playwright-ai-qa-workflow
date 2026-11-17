@@ -28,6 +28,10 @@ test.describe('Risk 3 - Screen out of step with the order (REQ-1.1 add, REQ-1.4 
       '€17.01',
     ]);
     await expect(page.getByTestId('order-total')).toHaveText('Total: €136.08');
+    // REQ-2.5: the notice is shown while the order has 8 or more tickets.
+    await expect(page.getByTestId('group-discount-note')).toHaveText(
+      'Group discount: 10% off every ticket',
+    );
 
     // 2. Click remove-visitor-button on any row.
     await page.getByTestId('remove-visitor-button').first().click();
@@ -44,5 +48,7 @@ test.describe('Risk 3 - Screen out of step with the order (REQ-1.1 add, REQ-1.4 
       '€18.90',
     ]);
     await expect(page.getByTestId('order-total')).toHaveText('Total: €132.30');
+    // REQ-2.5: with fewer than 8 tickets no notice is shown.
+    await expect(page.getByTestId('group-discount-note')).toBeHidden();
   });
 });

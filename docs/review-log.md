@@ -113,3 +113,28 @@ Newest entry last. Log a correction in the same commit as the change.
 - **Correction:** I changed every category locator to `getByText('...', { exact: true })` in the five tests and in the seed.
 - **Why:** REQ-1.1 names the four labels exactly. A row labelled "free" or "Freebie" must fail.
 - **Kind:** weak locator
+
+### 2026-11-17: empty-order check did not check the message
+
+- **Stage:** generated test
+- **AI output:** `order-age-1-5.spec.ts` checked `empty-order` with `toBeVisible()`, which passes whatever text the element shows.
+- **Correction:** It now checks `toHaveText('Add visitors to see a price')`.
+- **Why:** REQ-3.2 defines the exact message. Review finding 3 in `docs/reviews/m3-total-order-test-review.md`.
+- **Kind:** wrong assertion
+
+### 2026-11-17: group discount notice not checked
+
+- **Stage:** generated test
+- **AI output:** `order-remove-2-3.spec.ts` checked the prices and total at 8 and 7 tickets, but not the notice. The plan did not include it, because REQ-2.5 defined the notice only after the plan was written.
+- **Correction:** The test now checks the notice text at 8 tickets and that it is not shown at 7. "Not shown" uses `toBeHidden()`, because REQ-2.5 does not say whether the notice is removed or hidden. I also marked total plan questions 1 and 5 as answered.
+- **Why:** REQ-2.5. Review finding 8.
+- **Kind:** missing case
+
+### 2026-11-17: rejected: exact match for "Free appears exactly once"
+
+- **Stage:** generated test
+- **AI output:** Review finding 1 asked for `getByText('Free', { exact: true })` on `total-free-2-3.spec.ts` line 23.
+- **Correction:** Rejected; the test is unchanged. The category label and the price are already checked exactly in the same test. This line checks that no other "Free" is on the row, and the loose match is stronger for that: a remove button with the text "Remove free ticket" makes the count 2 and fails, while an exact match would not count it.
+- **Why:** REQ-3.4, "Free" appears only as the category label. A false alarm from the review skill.
+- **Kind:** other
+

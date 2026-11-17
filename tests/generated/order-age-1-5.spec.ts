@@ -18,6 +18,6 @@ test.describe('Risk 2 - Input wrongly accepted or refused (REQ-1.3 limit, REQ-1.
     );
     // expect: No visitor-row is added; empty-order is still shown.
     await expect(page.getByTestId('visitor-row')).toHaveCount(0);
-    await expect(page.getByTestId('empty-order')).toBeVisible();
+    await expect(page.getByTestId('empty-order')).toHaveText('Add visitors to see a price');
   });
 });
